@@ -78,6 +78,41 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             // Customize and create the third level here
             return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, player);
         }
+
+
+        public void SwitchToNextLevel()
+        {
+            // Switch to the next level
+            currentLevelIndex++;
+            if (currentLevelIndex >= levels.Count)
+            {
+                // You can handle what happens when all levels are completed here
+                // For example, end the game or show a victory message
+            }
+            else
+            {
+                // Load the new level
+                LoadCurrentLevel();
+            }
+        }
+
+        private void LoadCurrentLevel()
+        {
+            // Load the current level from the list
+            Level currentLevel = levels[currentLevelIndex];
+
+            // Other level loading and initialization logic can go here
+
+            // Example: Display level intro
+            currentLevel.LevelIntro();
+
+            // Example: Generate the game world for the current level
+            currentLevel.GenerateGameWorld();
+
+            // Example: Initialize the player for the current level
+            currentLevel.InitializePlayer();
+        }
+
         //Initialize Player object
         private void InitializePlayer()
         {
@@ -152,6 +187,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void BeginGame()
         {
+            LoadCurrentLevel();
             LevelIntro();
             GenerateGameWorld();
             InitializePlayer();
