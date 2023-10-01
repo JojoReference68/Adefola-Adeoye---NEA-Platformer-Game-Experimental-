@@ -12,7 +12,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private int gameMapHeight;
         private Terrain_Generator terrainGenerator;
         private char[,] gameMap;
-        private int heightmulitplier;
+        private int heightmultiplier;
         private char terrainChar;
         private Player player;
         private int terminalVelocity;
@@ -21,7 +21,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             width = Width;
             gameMapHeight = GameMapHeight;
-            heightmulitplier = HeightMultiplier;
+            heightmultiplier = HeightMultiplier;
             terrainChar = TerrainChar;
             player = Player;
 
@@ -40,7 +40,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
             for (int x = 0; x < width; x++)
             {
-                int terrainHeight = (int)(terrain[x] * heightmulitplier);
+                int terrainHeight = (int)(terrain[x] * heightmultiplier);
                 for (int y = 0; y < gameMapHeight; y++)
                 {
                     if (y >= gameMapHeight - Math.Max(terrainHeight, 1))

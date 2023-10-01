@@ -17,7 +17,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private int width = 205;
         private int gameMapHeight = 48; // Set the height of your game world
         private int minTerrainHeight = 1; // Minimum height for the terrain
-        private int heightmulitplier = 20;
+        private int heightmultiplier = 20;
         //Maximum height for the terrain
         private float persistence = 0.5f;
         private int octaves = 5;
@@ -51,7 +51,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             terrainGenerator = new Terrain_Generator(width, persistence, octaves);
             terrain = terrainGenerator.GeneratePerlinNoise();
             gameMap = new char[width, gameMapHeight]; // Initialize the game map array
-            heightmulitplier = randomizer.Next(20, 30);
+            heightmultiplier = randomizer.Next(20, 30);
             terminalVelocity = 7;
             terrainChar = '█';
             player = new Player(" ", 0, 0, 0, 0);
@@ -60,20 +60,21 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         private Level CreateLevel1()
         {
-            int heightMultiplier1 = heightmulitplier;
+            int heightMultiplier1 = heightmultiplier;
             // Customize and create the first level here
             return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, player);
         }
 
         private Level CreateLevel2()
         {
-            int heightMultiplier2 
+            int heightMultiplier2 = heightmultiplier + 5;
             // Customize and create the second level here
             return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, player);
         }
 
         private Level CreateLevel3()
         {
+            int heightMultiplier3 = heightmultiplier + 5;
             // Customize and create the third level here
             return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, player);
         }
@@ -82,7 +83,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             Random rnd = new Random();
             int randomX = rnd.Next(0, 6);
-            int playerY = gameMapHeight - heightmulitplier;
+            int playerY = gameMapHeight - heightmultiplier;
             player = new Player("PlayerName", randomX, playerY, 0, 0); // Adjust player's initial velocity and displacement as needed
             player.Show(gameMap);
         }
@@ -91,7 +92,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             for (int x = 0; x < width; x++)
             {
-                int terrainHeight = (int)(terrain[x] * heightmulitplier); // Adjust the multiplier for terrain height
+                int terrainHeight = (int)(terrain[x] * heightmultiplier); // Adjust the multiplier for terrain height
                 for (int y = 0; y < gameMapHeight; y++)
                 {
                     if (y >= gameMapHeight - Math.Max(terrainHeight, minTerrainHeight))
