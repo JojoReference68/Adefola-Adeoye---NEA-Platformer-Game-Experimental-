@@ -269,5 +269,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             player.SetPosY(newYPos);
             player.SetInitialVelocity(velocity);
         }
+
+
     }
 }

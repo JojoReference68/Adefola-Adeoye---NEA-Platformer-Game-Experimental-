@@ -17,7 +17,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private int width = 205;
         private int gameMapHeight = 48; // Set the height of your game world
         private int minTerrainHeight = 1; // Minimum height for the terrain
-        private int heightmultiplier = 20;
+        private int heightmultiplier;
         //Maximum height for the terrain
         private float persistence = 0.5f;
         private int octaves = 5;
@@ -62,21 +62,21 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             int heightMultiplier1 = heightmultiplier;
             // Customize and create the first level here
-            return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, player);
+            return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, persistence, octaves, player);
         }
 
         private Level CreateLevel2()
         {
             int heightMultiplier2 = heightmultiplier + 5;
             // Customize and create the second level here
-            return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, player);
+            return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, persistence, octaves, player);
         }
 
         private Level CreateLevel3()
         {
-            int heightMultiplier3 = heightmultiplier + 5;
+            int heightMultiplier3 = heightmultiplier + 10;
             // Customize and create the third level here
-            return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, player);
+            return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence, octaves, player );
         }
 
 
@@ -104,13 +104,12 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             // Other level loading and initialization logic can go here
 
             // Example: Display level intro
-            currentLevel.LevelIntro();
+            currentLevel.LevelIntro(currentLevelIndex+1);
 
             // Example: Generate the game world for the current level
-            currentLevel.GenerateGameWorld();
+            currentLevel.LevelSetUp();
 
             // Example: Initialize the player for the current level
-            currentLevel.InitializePlayer();
         }
 
         //Initialize Player object
@@ -279,11 +278,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void LevelIntro()
         {
-            
             Console.Clear();
             player.ChangeName(GetUsername());
             Console.WriteLine($"Hello {player.GetName()} welcome! I'd say good luck but this isn't much of a challenge unless you're challenged.");
-            Console.WriteLine($"Welcome to Level {currentLevelIndex}");
             Console.WriteLine("Cue the music.");
             Console.ReadKey(true);
             Console.Clear();

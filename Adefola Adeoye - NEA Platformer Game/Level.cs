@@ -12,47 +12,168 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private int gameMapHeight;
         private Terrain_Generator terrainGenerator;
         private char[,] gameMap;
+        private float[] terrain;
         private int heightmultiplier;
         private char terrainChar;
+        private float persistence;
+        private int octaves;
         private Player player;
         private int terminalVelocity;
+        private int minTerrainHeight; // Minimum height for the terrain
 
-        public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, Player Player)
+
+        public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves, Player Player )
         {
             width = Width;
             gameMapHeight = GameMapHeight;
             heightmultiplier = HeightMultiplier;
             terrainChar = TerrainChar;
+            persistence = Persistence;
+            octaves = Octaves;
             player = Player;
+            minTerrainHeight = 1;
+            Console.SetWindowSize(width, gameMapHeight);
 
-            // Initialize terrain generator for this level
-            terrainGenerator = new Terrain_Generator(width, 0.5f, 5); // You can adjust persistence and octaves as needed
+            // Initialize the player
+            player = new Player("PlayerName", 0, gameMapHeight - heightmultiplier, 0, 0);
 
-            // Create the game map and generate terrain
+            // Initialize the terrain generator and generate the game world
+            terrainGenerator = new Terrain_Generator(width, persistence, octaves);
+            terrain = terrainGenerator.GeneratePerlinNoise();
+
+            // Initialize the game map based on terrain
             gameMap = new char[width, gameMapHeight];
-            GenerateGameWorld();
+            GenerateGameWorld(); // You can customize this method
         }
 
-        // Method to populate the game world map with terrain
         private void GenerateGameWorld()
         {
-            float[] terrain = terrainGenerator.GeneratePerlinNoise();
-
             for (int x = 0; x < width; x++)
             {
-                int terrainHeight = (int)(terrain[x] * heightmultiplier);
+                int terrainHeight = (int)(terrain[x] * heightmultiplier); // Adjust the multiplier for terrain height
                 for (int y = 0; y < gameMapHeight; y++)
                 {
-                    if (y >= gameMapHeight - Math.Max(terrainHeight, 1))
+                    if (y >= gameMapHeight - Math.Max(terrainHeight, minTerrainHeight))
                     {
-                        gameMap[x, y] = terrainChar;
+                        gameMap[x, y] = '█'; // Set the map cell to represent terrain
                     }
                     else
                     {
-                        gameMap[x, y] = ' ';
+                        gameMap[x, y] = ' '; // Set empty space for non-terrain cells
                     }
                 }
             }
         }
+
+        public void HandleGravity()
+        {
+            double deltaTime = 0.1;
+            double velocity = player.GetInitialVelocity() + (player.GetAcceleration() * deltaTime);
+
+            if (velocity >= terminalVelocity)
+            {
+                velocity = terminalVelocity;
+            }
+            int newYPos = player.GetPosY() + (int)Math.Round(velocity * deltaTime);
+            if (newYPos < 0)
+            {
+                newYPos = 0;
+                velocity = 0; // Reset velocity when hitting the top of the screen
+            }
+
+            player.SetPosY(newYPos);
+            player.SetInitialVelocity(velocity);
+        }
+
+        public void HandleInput(ConsoleKeyInfo input)   //Handles the player controls and the right response
+        {
+            if (input.Key == ConsoleKey.LeftArrow && player.GetPosX() > 0)
+            {
+                if (player.GetPosX() > 0 && CheckCollisionLeft() == false)
+                {
+                    player.MoveLeft(gameMap);
+                }
+
+            }
+            else if (input.Key == ConsoleKey.RightArrow && player.GetPosX() < width - 1)
+            {
+                if (player.GetPosX() < width - 1 && CheckCollisionRight() == false)
+                {
+                    player.MoveRight(gameMap);
+                }
+
+            }
+            else if (input.Key == ConsoleKey.UpArrow && CheckTouchingTerrain() == true && player.GetPosY() <= gameMapHeight - 1)
+            {
+                player.MoveUp();
+            }
+        }
+
+        protected bool CheckCollisionLeft()
+        {
+            return gameMap[player.GetPosX() - 1, player.GetPosY()] == terrainChar;
+        }
+        protected bool CheckCollisionRight()
+        {
+            return gameMap[player.GetPosX() + 1, player.GetPosY()] == terrainChar;
+        }
+
+        public bool CheckTouchingTerrain()    //Checks if the player and terrain are touching
+        {
+            // Check if player's position is within map bounds
+            if (player.GetPosX() >= 0 && player.GetPosX() < width && player.GetPosY() >= 0 && player.GetPosY() < gameMapHeight - 1)
+            {
+                return gameMap[player.GetPosX(), player.GetPosY() + 1] == terrainChar;
+            }
+            return false;
+        }
+
+        public void DisplayGameWorld()
+        {
+            // Implement your code to display the game world
+        }
+
+        // Other level-specific methods and logic
+        public void LevelSetUp()
+        {
+            GenerateGameWorld();
+            InitializePlayer();
+            DisplayGameWorld();
+
+        }
+
+        public void LevelIntro(int CurrentLevel)
+        {
+            Console.Clear();
+            Console.WriteLine($"Welcome to Level {CurrentLevel}");
+            Console.WriteLine("Cue the music.");
+            LoadingSequence();
+            Console.Clear();
+        }
+
+        private void InitializePlayer()
+        {
+            Random rnd = new Random();
+            int randomX = rnd.Next(0, 6);
+            int playerY = gameMapHeight - heightmultiplier;
+            player = new Player("PlayerName", randomX, playerY, 0, 0); // Adjust player's initial velocity and displacement as needed
+            player.Show(gameMap);
+        }
+
+        private void LoadingSequence()
+        {
+            int count = 0;
+            while (Console.KeyAvailable == false)
+            {
+
+                if (count < 30)
+                {
+                    Console.Write('.');
+                    count++;
+                }
+                System.Threading.Thread.Sleep(250);
+            }
+        }
     }
+
 }
