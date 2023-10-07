@@ -86,8 +86,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             currentLevelIndex++;
             if (currentLevelIndex >= levels.Count)
             {
-                // You can handle what happens when all levels are completed here
-                // For example, end the game or show a victory message
+                //handle what happens when all levels are completed here
+                VictoryMessage();
+
             }
             else
             {
@@ -96,20 +97,26 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             }
         }
 
+        private void VictoryMessage()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("       _      _                   \r\n      (_)    | |                  \r\n__   ___  ___| |_ ___  _ __ _   _ \r\n\\ \\ / / |/ __| __/ _ \\| '__| | | |\r\n \\ V /| | (__| || (_) | |  | |_| |\r\n  \\_/ |_|\\___|\\__\\___/|_|   \\__, |\r\n                             __/ |\r\n                            |___/ \r\n");
+            Console.ReadKey(true);
+            Console.Clear();
+        }
+
+
+
         private void LoadCurrentLevel()
         {
             // Load the current level from the list
             Level currentLevel = levels[currentLevelIndex];
 
-            // Other level loading and initialization logic can go here
-
-            // Example: Display level intro
+            //level loading/initialization logic can goes here
             currentLevel.LevelIntro(currentLevelIndex+1);
-
-            // Example: Generate the game world for the current level
             currentLevel.LevelSetUp();
-
-            // Example: Initialize the player for the current level
+            currentLevel.BeginGame();
         }
 
         //Initialize Player object

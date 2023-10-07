@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Adefola_Adeoye___NEA_Platformer_Game
@@ -20,6 +22,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private Player player;
         private int terminalVelocity;
         private int minTerrainHeight; // Minimum height for the terrain
+        private bool isMusicPlaying;
 
 
         public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves, Player Player )
@@ -130,7 +133,66 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void DisplayGameWorld()
         {
-            // Implement your code to display the game world
+            int screenHeight = Console.WindowHeight;
+
+            // Calculate the starting Y position for rendering the terrain
+            int startY = Math.Max(0, screenHeight - gameMapHeight);
+
+            for (int y = startY; y < screenHeight; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    int adjustedY = y - startY; // Adjust the Y coordinate for rendering
+                    char mapChar = (adjustedY < gameMapHeight) ? gameMap[x, adjustedY] : ' '; // Use space if outside gameMap
+
+                    Console.SetCursorPosition(x, y);
+                    Console.Write(mapChar);
+                }
+            }
+        }
+
+        public void BeginGame()
+        {
+            bool quitGame = false;
+
+            //seperate thread for music playback
+            Thread musicThread = new Thread(PlayBackgroundMusic);
+            musicThread.Start();
+
+            while (quitGame == false)
+            {
+                if (Console.KeyAvailable == true)
+                {
+                    ConsoleKeyInfo input = Console.ReadKey(true);
+                    HandleInput(input);
+                }
+                player.Delete(gameMap);
+                HandleGravity();
+                if (CheckTouchingTerrain() == true)
+                {
+                    player.SetInitialVelocity(0.0);
+                }
+                player.Show(gameMap);
+                System.Threading.Thread.Sleep(50);
+            }
+            isMusicPlaying = false;
+            musicThread.Join();
+
+        }
+
+        public void PlayBackgroundMusic()
+        {
+            string filepath = "C:\\Users\\Adefola\\Documents\\Projects\\Adefola Adeoye - NEA Platformer Game\\Adefola Adeoye - NEA Platformer Game\\bin\\Debug\\Megalovania.wav";
+            //plays megalovania
+            SoundPlayer soundPlayer = new SoundPlayer(filepath);
+            soundPlayer.Play();
+
+            isMusicPlaying = true;
+
+            while (isMusicPlaying)
+            {
+                soundPlayer.PlaySync(); // Play the music synchronously
+            }
         }
 
         // Other level-specific methods and logic
@@ -139,7 +201,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             GenerateGameWorld();
             InitializePlayer();
             DisplayGameWorld();
-
         }
 
         public void LevelIntro(int CurrentLevel)
