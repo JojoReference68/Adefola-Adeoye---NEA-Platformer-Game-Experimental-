@@ -25,7 +25,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private bool isMusicPlaying;
 
 
-        public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves, Player Player )
+        public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves)
         {
             width = Width;
             gameMapHeight = GameMapHeight;
@@ -33,12 +33,12 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             terrainChar = TerrainChar;
             persistence = Persistence;
             octaves = Octaves;
-            player = Player;
             minTerrainHeight = 1;
+            terminalVelocity = 7;
             Console.SetWindowSize(width, gameMapHeight);
 
             // Initialize the player
-            player = new Player("PlayerName", 0, gameMapHeight - heightmultiplier, 0, 0);
+            player = new Player("PlayerName", 0, 0, 0, 0);
 
             // Initialize the terrain generator and generate the game world
             terrainGenerator = new Terrain_Generator(width, persistence, octaves);
@@ -212,6 +212,8 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Console.Clear();
         }
 
+
+        //Player Object
         private void InitializePlayer()
         {
             Random rnd = new Random();

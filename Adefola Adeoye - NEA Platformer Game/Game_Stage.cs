@@ -31,10 +31,16 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         bool isMusicPlaying;
         private List<Level> levels; // List to store different levels
         private int currentLevelIndex; // Index of the current level
+        private string playerusername;
 
 
         public Game_Stage()
         {
+            currentLevelIndex = 0; // Start with the first level
+            heightmultiplier = randomizer.Next(20, 30);
+            terrainChar = '█';
+            Console.SetWindowSize(width, gameMapHeight);
+
             levels = new List<Level>();
             Level level1 = CreateLevel1();
             levels.Add(level1);
@@ -45,16 +51,8 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Level level3 = CreateLevel3();
             levels.Add(level3);
 
-            currentLevelIndex = 0; // Start with the first level
 
-            Console.SetWindowSize(width, gameMapHeight);
-            terrainGenerator = new Terrain_Generator(width, persistence, octaves);
-            terrain = terrainGenerator.GeneratePerlinNoise();
-            gameMap = new char[width, gameMapHeight]; // Initialize the game map array
-            heightmultiplier = randomizer.Next(20, 30);
-            terminalVelocity = 7;
-            terrainChar = '█';
-            player = new Player(" ", 0, 0, 0, 0);
+
 
         }
 
@@ -62,21 +60,21 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             int heightMultiplier1 = heightmultiplier;
             // Customize and create the first level here
-            return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, persistence, octaves, player);
+            return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, persistence, octaves);
         }
 
         private Level CreateLevel2()
         {
             int heightMultiplier2 = heightmultiplier + 5;
             // Customize and create the second level here
-            return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, persistence, octaves, player);
+            return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, persistence, octaves);
         }
 
         private Level CreateLevel3()
         {
             int heightMultiplier3 = heightmultiplier + 10;
             // Customize and create the third level here
-            return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence, octaves, player );
+            return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence, octaves);
         }
 
 
@@ -119,176 +117,20 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             currentLevel.BeginGame();
         }
 
-        //Initialize Player object
-        private void InitializePlayer()
-        {
-            Random rnd = new Random();
-            int randomX = rnd.Next(0, 6);
-            int playerY = gameMapHeight - heightmultiplier;
-            player = new Player("PlayerName", randomX, playerY, 0, 0); // Adjust player's initial velocity and displacement as needed
-            player.Show(gameMap);
-        }
-        //Method to populate the game world map with terrain
-        private void GenerateGameWorld()
-        {
-            for (int x = 0; x < width; x++)
-            {
-                int terrainHeight = (int)(terrain[x] * heightmultiplier); // Adjust the multiplier for terrain height
-                for (int y = 0; y < gameMapHeight; y++)
-                {
-                    if (y >= gameMapHeight - Math.Max(terrainHeight, minTerrainHeight))
-                    {
-                        gameMap[x, y] = '█'; // Set the map cell to represent terrain
-                    }
-                    else
-                    {
-                        gameMap[x, y] = ' '; // Set empty space for non-terrain cells
-                    }
-                }
-            }
-        }
-
-        // Display the game world map
-        public void DisplayGameWorld()
-        {
-
-            int screenHeight = Console.WindowHeight;
-
-            // Calculate the starting Y position for rendering the terrain
-            int startY = Math.Max(0, screenHeight - gameMapHeight);
-
-            for (int y = startY; y < screenHeight; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    int adjustedY = y - startY; // Adjust the Y coordinate for rendering
-                    char mapChar = (adjustedY < gameMapHeight) ? gameMap[x, adjustedY] : ' '; // Use space if outside gameMap
-
-                    Console.SetCursorPosition(x, y);
-                    Console.Write(mapChar);
-                }
-            }
-
-        }
-
-        public void HandleGravity()
-        {
-            double deltaTime = 0.1;
-            double velocity = player.GetInitialVelocity() + (player.GetAcceleration() * deltaTime);
-
-            if (velocity >= terminalVelocity)
-            {
-                velocity = terminalVelocity;
-            }
-            int newYPos = player.GetPosY() + (int)Math.Round(velocity * deltaTime);
-            if (newYPos < 0)
-            {
-                newYPos = 0;
-                velocity = 0; // Reset velocity when hitting the top of the screen
-            }
-
-            player.SetPosY(newYPos);
-            player.SetInitialVelocity(velocity);
-        }
-
         public void BeginGame()
         {
+            GameIntro();
             LoadCurrentLevel();
-            LevelIntro();
-            GenerateGameWorld();
-            InitializePlayer();
-            DisplayGameWorld();
-            bool quitGame = false;
-
-            //seperate thread for music playback
-            Thread musicThread = new Thread(PlayBackgroundMusic);
-            musicThread.Start();
-
-            while (quitGame == false)
-            {
-                if (Console.KeyAvailable == true)
-                {
-                    ConsoleKeyInfo input = Console.ReadKey(true);
-                    HandleInput(input);
-                }
-                player.Delete(gameMap);
-                HandleGravity();
-                if (CheckTouchingTerrain() == true)
-                {
-                    player.SetInitialVelocity(0.0);
-                }
-                player.Show(gameMap);
-                System.Threading.Thread.Sleep(50);
-            }
-            isMusicPlaying = false;
-            musicThread.Join();
-        }
-
-        public void PlayBackgroundMusic()
-        {
-            string filepath = "C:\\Users\\Adefola\\Documents\\Projects\\Adefola Adeoye - NEA Platformer Game\\Adefola Adeoye - NEA Platformer Game\\bin\\Debug\\Megalovania.wav";
-            //plays megalovania
-            SoundPlayer soundPlayer = new SoundPlayer(filepath);
-            soundPlayer.Play();
-
-            isMusicPlaying = true;
-
-            while (isMusicPlaying)
-            {
-                soundPlayer.PlaySync(); // Play the music synchronously
-            }
-        }
-
-        public void HandleInput(ConsoleKeyInfo input)   //Handles the player controls and the right response
-        {
-            if (input.Key == ConsoleKey.LeftArrow && player.GetPosX() > 0)
-            {
-                if (player.GetPosX() > 0 && CheckCollisionLeft() == false)
-                {
-                    player.MoveLeft(gameMap);
-                }
-
-            }
-            else if (input.Key == ConsoleKey.RightArrow && player.GetPosX() < width - 1)
-            {
-                if (player.GetPosX() < width - 1 && CheckCollisionRight() == false)
-                {
-                    player.MoveRight(gameMap);
-                }
-
-            }
-            else if (input.Key == ConsoleKey.UpArrow && CheckTouchingTerrain() == true && player.GetPosY() <= gameMapHeight - 1)
-            {
-                player.MoveUp();
-            }
-        }
-
-        protected bool CheckCollisionLeft()
-        {
-            return gameMap[player.GetPosX() - 1, player.GetPosY()] == terrainChar;
-        }
-        protected bool CheckCollisionRight()
-        {
-            return gameMap[player.GetPosX() + 1, player.GetPosY()] == terrainChar;
-        }
-
-        public bool CheckTouchingTerrain()    //Checks if the player and terrain are touching
-        {
-            // Check if player's position is within map bounds
-            if (player.GetPosX() >= 0 && player.GetPosX() < width && player.GetPosY() >= 0 && player.GetPosY() < gameMapHeight - 1)
-            {
-                return gameMap[player.GetPosX(), player.GetPosY() + 1] == terrainChar;
-            }
-            return false;
+            SwitchToNextLevel();
+            SwitchToNextLevel();
         }
 
 
-        public void LevelIntro()
+        public void GameIntro()
         {
             Console.Clear();
-            player.ChangeName(GetUsername());
-            Console.WriteLine($"Hello {player.GetName()} welcome! I'd say good luck but this isn't much of a challenge unless you're challenged.");
-            Console.WriteLine("Cue the music.");
+            playerusername = GetUsername();
+            Console.WriteLine($"Hello {playerusername} welcome! I'd say good luck but this isn't much of a challenge unless you're challenged.");
             Console.ReadKey(true);
             Console.Clear();
         }
@@ -299,7 +141,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             string userName = Console.ReadLine();
             Console.Clear();
             return userName;
-
         }
 
         static void LoadingSequence()
