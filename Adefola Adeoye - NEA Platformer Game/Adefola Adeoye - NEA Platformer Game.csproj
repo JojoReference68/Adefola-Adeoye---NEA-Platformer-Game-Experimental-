@@ -47,6 +47,7 @@
     <Compile Include="HighScoreEntry.cs" />
     <Compile Include="HighScoreManager.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="Platform Generator.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

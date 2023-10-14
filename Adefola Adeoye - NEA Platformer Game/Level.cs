@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adefola_Adeoye___NEA_Platformer_Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
@@ -23,6 +24,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private int terminalVelocity;
         private int minTerrainHeight; // Minimum height for the terrain
         private bool isMusicPlaying;
+        private Platform_Generator platformGenerator;
 
 
         public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves)
@@ -156,8 +158,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             bool quitGame = false;
 
             //seperate thread for music playback
-            Thread musicThread = new Thread(PlayBackgroundMusic);
-            musicThread.Start();
+
 
             while (quitGame == false)
             {
@@ -171,12 +172,11 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 if (CheckTouchingTerrain() == true)
                 {
                     player.SetInitialVelocity(0.0);
+                    if (ReachedEndofLevel() == true) { quitGame = true; }
                 }
                 player.Show(gameMap);
                 System.Threading.Thread.Sleep(50);
             }
-            isMusicPlaying = false;
-            musicThread.Join();
 
         }
 
@@ -185,14 +185,23 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             string filepath = "C:\\Users\\Adefola\\Documents\\Projects\\Adefola Adeoye - NEA Platformer Game\\Adefola Adeoye - NEA Platformer Game\\bin\\Debug\\Megalovania.wav";
             //plays megalovania
             SoundPlayer soundPlayer = new SoundPlayer(filepath);
-            soundPlayer.Play();
-
-            isMusicPlaying = true;
-
-            while (isMusicPlaying)
+            try
             {
-                soundPlayer.PlaySync(); // Play the music synchronously
+                soundPlayer.Play();
+                isMusicPlaying = true;
+                while (isMusicPlaying)
+                {
+                    soundPlayer.PlaySync(); // Play the music synchronously
+                }
             }
+            catch (Exception e)
+            {
+                string me = e.Message;
+                Console.WriteLine(e);
+                System.Threading.Thread.Sleep(500);
+                Console.Clear();
+            }
+
         }
 
         // Other level-specific methods and logic
@@ -237,6 +246,15 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 System.Threading.Thread.Sleep(250);
             }
         }
+
+        private bool ReachedEndofLevel() // This works assuming the player has been check to see if they're on the ground.
+        {
+            return (player.GetPosX() == width - 1);
+        }
+
     }
 
 }
+
+
+
