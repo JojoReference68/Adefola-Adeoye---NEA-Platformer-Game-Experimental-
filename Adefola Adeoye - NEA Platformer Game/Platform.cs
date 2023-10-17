@@ -41,6 +41,18 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             }
         }
 
+        public void ChangeX(int X)
+        {
+            Xposition = X;
+        }
+
+        public void ChangeY(int Y)
+        {
+            Yposition = Y;
+        }
+
+        public void ChangeWidth(int Width) { width = Width; }
+        public void ChangeHeight(int Height) {  height = Height; }
         public int getX()
         {
             return Xposition;
@@ -60,5 +72,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             return width;
         }
+
+        public int getHeight() { return  height;}
+
+        public char getCharacter() {return character;}
     }
 }

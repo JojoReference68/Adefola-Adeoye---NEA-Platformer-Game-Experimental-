@@ -1,5 +1,4 @@
-﻿using Adefola_Adeoye___NEA_Platformer_Game;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Media;
@@ -45,7 +44,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             // Initialize the terrain generator and generate the game world
             terrainGenerator = new Terrain_Generator(width, persistence, octaves);
             terrain = terrainGenerator.GeneratePerlinNoise();
-
+            platformGenerator = new Platform_Generator();
             // Initialize the game map based on terrain
             gameMap = new char[width, gameMapHeight];
             GenerateGameWorld(); // You can customize this method
@@ -252,6 +251,16 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             return (player.GetPosX() == width - 1);
         }
 
+
+        private void PlatformsSetUp()
+        {
+            // Create platforms and add them to the generator
+            platformGenerator.CreatePlatform(10, 10, 20, 1);
+            platformGenerator.CreatePlatform(30, 15, 15, 1);
+
+            // Add the platforms to the game map
+            platformGenerator.AddPlatformsToMap(gameMap);
+        }
     }
 
 }
