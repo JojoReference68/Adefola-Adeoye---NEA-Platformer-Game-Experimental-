@@ -23,7 +23,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private int terminalVelocity;
         private int minTerrainHeight; // Minimum height for the terrain
         private bool isMusicPlaying;
-        private Platform_Generator platformGenerator;
+        private PlatformManager platformManager;
 
 
         public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves)
@@ -37,17 +37,22 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             minTerrainHeight = 1;
             terminalVelocity = 7;
             Console.SetWindowSize(width, gameMapHeight);
-
+            
             // Initialize the player
             player = new Player("PlayerName", 0, 0, 0, 0);
 
             // Initialize the terrain generator and generate the game world
             terrainGenerator = new Terrain_Generator(width, persistence, octaves);
             terrain = terrainGenerator.GeneratePerlinNoise();
-            platformGenerator = new Platform_Generator();
             // Initialize the game map based on terrain
             gameMap = new char[width, gameMapHeight];
-            GenerateGameWorld(); // You can customize this method
+            platformManager = new PlatformManager(gameMap, width, gameMapHeight);
+        }
+
+
+        public void GeneratePlatformsUsingPerlinNoise(int numberOfPlatforms, int minWidth, int maxWidth, int minHeight, int maxHeight, int minYPos, int maxYPos, int minDistance)
+        {
+            platformManager.GeneratePlatformsUsingPerlin(numberOfPlatforms, minWidth, maxWidth, minHeight, maxHeight, minYPos, maxYPos, minDistance);
         }
 
         private void GenerateGameWorld()
@@ -208,6 +213,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             GenerateGameWorld();
             InitializePlayer();
+            PlatformsSetUp();
             DisplayGameWorld();
         }
 
@@ -254,12 +260,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         private void PlatformsSetUp()
         {
-            // Create platforms and add them to the generator
-            platformGenerator.CreatePlatform(10, 10, 20, 1);
-            platformGenerator.CreatePlatform(30, 15, 15, 1);
-
-            // Add the platforms to the game map
-            platformGenerator.AddPlatformsToMap(gameMap);
+            // Create platforms and add them to the gamemap
+            GeneratePlatformsUsingPerlinNoise(8, 8, 11, 1, 3, 15, 25, 5);
+            
         }
     }
 
