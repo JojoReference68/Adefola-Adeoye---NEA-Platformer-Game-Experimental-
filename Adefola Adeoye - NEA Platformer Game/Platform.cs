@@ -24,7 +24,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             character = '=';
         }
 
-        public void AddPlatform(char[,] map, int Cheight, int Cwidth)
+        public void AddPlatform(char[,] map, int Cheight, int Cwidth) //Adds a platform structure to a map
         {
             int rows = map.GetLength(0);
             int cols = map.GetLength(1);

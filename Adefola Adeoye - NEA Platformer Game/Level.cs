@@ -74,12 +74,12 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             }
         }
 
-        public void HandleGravity()
+        public void HandleGravity() //Simulate gravity using suvat equations
         {
             double deltaTime = 0.1;
             double velocity = player.GetInitialVelocity() + (player.GetAcceleration() * deltaTime);
 
-            if (velocity >= terminalVelocity)
+            if (velocity >= terminalVelocity) //sets a speed limit to the player
             {
                 velocity = terminalVelocity;
             }
@@ -96,7 +96,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void HandleInput(ConsoleKeyInfo input)   //Handles the player controls and the right response
         {
-            if (input.Key == ConsoleKey.LeftArrow && player.GetPosX() > 0)
+            if (input.Key == ConsoleKey.LeftArrow && player.GetPosX() > 0) //Moves player left
             {
                 if (player.GetPosX() > 0 && CheckCollisionLeft() == false)
                 {
@@ -104,7 +104,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 }
 
             }
-            else if (input.Key == ConsoleKey.RightArrow && player.GetPosX() < width - 1)
+            else if (input.Key == ConsoleKey.RightArrow && player.GetPosX() < width - 1) //Moves player right
             {
                 if (player.GetPosX() < width - 1 && CheckCollisionRight() == false)
                 {
@@ -112,22 +112,22 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 }
 
             }
-            else if (input.Key == ConsoleKey.UpArrow && CheckTouchingTerrain() == true && player.GetPosY() <= gameMapHeight - 1)
+            else if (input.Key == ConsoleKey.UpArrow && CheckTouchingTerrain() == true && player.GetPosY() <= gameMapHeight - 1) //Lets player jump
             {
                 player.MoveUp();
             }
         }
 
-        protected bool CheckCollisionLeft()
+        protected bool CheckCollisionLeft()  //Checks if the player and terrain to the right are touching
         {
             return gameMap[player.GetPosX() - 1, player.GetPosY()] == terrainChar;
         }
-        protected bool CheckCollisionRight()
+        protected bool CheckCollisionRight() //Checks if the player and terrain to the left are touching
         {
             return gameMap[player.GetPosX() + 1, player.GetPosY()] == terrainChar;
         }
 
-        public bool CheckTouchingTerrain()    //Checks if the player and terrain are touching
+        public bool CheckTouchingTerrain() //Checks if the player and terrain below are touching
         {
             // Check if player's position is within map bounds
             if (player.GetPosX() >= 0 && player.GetPosX() < width && player.GetPosY() >= 0 && player.GetPosY() < gameMapHeight - 1)
@@ -161,9 +161,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             bool quitGame = false;
 
-            //seperate thread for music playback
+            //seperate thread for music playback(yet to be implemented)
 
-
+            //main game logic
             while (quitGame == false)
             {
                 if (Console.KeyAvailable == true)
@@ -173,10 +173,10 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 }
                 player.Delete(gameMap);
                 HandleGravity();
-                if (CheckTouchingTerrain() == true)
+                if (CheckTouchingTerrain() == true) //ensures player does not fall through
                 {
                     player.SetInitialVelocity(0.0);
-                    if (ReachedEndofLevel() == true) { quitGame = true; }
+                    if (ReachedEndofLevel() == true) { quitGame = true; } //ends the level once the player has reached the end of the gamemap.
                 }
                 player.Show(gameMap);
                 System.Threading.Thread.Sleep(50);
@@ -217,7 +217,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             DisplayGameWorld();
         }
 
-        public void LevelIntro(int CurrentLevel)
+        public void LevelIntro(int CurrentLevel) // Gives the user a quick introduction
         {
             Console.Clear();
             Console.WriteLine($"Welcome to Level {CurrentLevel}");
@@ -237,7 +237,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             player.Show(gameMap);
         }
 
-        private void LoadingSequence()
+        private void LoadingSequence() //Loading screen until any input is received
         {
             int count = 0;
             while (Console.KeyAvailable == false)

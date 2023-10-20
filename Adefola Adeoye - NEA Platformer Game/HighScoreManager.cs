@@ -21,7 +21,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             fileName = IfileName;
             filePath = filePath + fileName;
         }
-        public void ReadHighScoresFromFile()
+        public void ReadHighScoresFromFile() // fetches data from a text file
         {
 
 

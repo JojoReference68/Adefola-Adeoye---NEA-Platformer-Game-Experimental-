@@ -161,7 +161,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         }
         static void Up(string character)
         {
-
             Console.CursorLeft = 0;
             Console.Write(' ');
             Console.CursorTop--;
