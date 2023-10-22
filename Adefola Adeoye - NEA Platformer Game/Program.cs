@@ -24,6 +24,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 {
                     case 0:
                         StartNewGame();
+                        Console.ReadKey(true);
                         break;
                     case 1:
                         Console.Clear();
@@ -33,9 +34,11 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                         break;
                     case 2:
                         StartTutorial();
+                        Console.ReadKey(true);
                         break;
                     case 3:
                         ShowHighScores();
+                        Console.ReadKey(true);
                         break;
                     case 4:
                         exitGame();
