@@ -23,9 +23,10 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void GeneratePlatformsUsingPerlin(int numberOfPlatforms, int minWidth, int maxWidth, int minHeight, int maxHeight, int minYPos, int maxYPos, int minDistance)
         {
-            int previousPlatformX = -1; // Initialize with a value that is out of the map bounds
+            int generatedPlatforms = 0;
+            int previousPlatformX = -1;
 
-            for (int i = 0; i < numberOfPlatforms; i++)
+            while (generatedPlatforms < numberOfPlatforms)
             {
                 int platformWidth = random.Next(minWidth, maxWidth);
                 int platformHeight = random.Next(minHeight, maxHeight);
@@ -43,6 +44,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                         // Both platform, terrain, and minimum distance checks pass, so create the platform
                         CreatePlatform(posX, posY, platformWidth, platformHeight);
                         previousPlatformX = posX + platformWidth - 1; // Update the previous platform's X position
+                        generatedPlatforms++;
                         break;
                     }
                 }

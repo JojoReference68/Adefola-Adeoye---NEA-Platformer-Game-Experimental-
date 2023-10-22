@@ -261,7 +261,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private void PlatformsSetUp()
         {
             // Create platforms and add them to the gamemap
-            GeneratePlatformsUsingPerlinNoise(8, 8, 11, 1, 3, 15, 25, 5);
+            GeneratePlatformsUsingPerlinNoise(6, 8, 11, 1, 3, 10, 25, 5);
             
         }
     }

@@ -12,48 +12,56 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
     public class HighScoreManager
     {
         private List<HighScoreEntry> HighScoresList;
-        protected string fileName = "Test.txt";
-        private string filePath = "C:/Users/Adefola/Documents/GitHub/NEA---Platformer-Game/Adefola Adeoye - NEA Platformer Game/Adefola Adeoye - NEA Platformer Game/bin/Debug/";
+        protected string fileName = "HighScores.txt";
+        private string filePath = AppDomain.CurrentDomain.BaseDirectory;
 
-        public HighScoreManager(string IfileName)
+        public HighScoreManager()
         {
             HighScoresList = new List<HighScoreEntry>();
-            fileName = IfileName;
-            filePath = filePath + fileName;
+            filePath = Path.Combine(filePath, fileName);
+            // Checks if the high scores file exists, and create it if it doesn't
+            if (!File.Exists(filePath))
+            {
+                using (File.Create(filePath)) { } // This line creates the file
+            }
+
         }
         public void ReadHighScoresFromFile()
         {
-
-
-            if (IsFileEmpty(filePath) == false)
+            filePath = Path.Combine(filePath, fileName);
+            if (!File.Exists(filePath))
             {
-                try
-                {
-
-                    string[] lines = File.ReadAllLines(filePath);
-                    foreach (string line in lines)
-                    {
-                        string[] parts = line.Split(',');
-                        parts[0] = parts[0].Trim();
-                        parts[1] = parts[1].Trim();
-                        HighScoresList.Add(new HighScoreEntry(parts[0], int.Parse(parts[1])));
-                    }
-                }
-                catch (Exception)
-                {
-
-                    Console.WriteLine("An error has occured");
-                }
-
-
+                Console.WriteLine("High scores file not found.");
+                return; // Exit the method if the file doesn't exist.
             }
 
+            try
+            {
+                string[] lines = File.ReadAllLines(filePath);
+                if (lines.Length == 0)
+                {
+                    return; // Exit the method if the file is empty.
+                }
+
+                foreach (string line in lines)
+                {
+                    string[] parts = line.Split(',');
+                    parts[0] = parts[0].Trim();
+                    parts[1] = parts[1].Trim();
+                    HighScoresList.Add(new HighScoreEntry(parts[0], int.Parse(parts[1])));
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("An error has occurred while reading high scores.");
+            }
         }
 
         public bool IsFileEmpty(string xfilePath)
         {
+            xfilePath = Path.Combine(filePath, fileName);
             FileInfo fileInfo = new FileInfo(xfilePath);
-            return fileInfo.Length == 0;        //checks if the file is empty
+            return fileInfo.Length == 0;         //checks if the file is empty
         }
 
         public void PrintHighScores()
@@ -70,7 +78,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             }
             else
             {
-                Console.Write("No Highscores were found");
+                Console.WriteLine("No high scores found. Be the first to set a high score!");
             }
         }
         public void SortDescending() //abstraction

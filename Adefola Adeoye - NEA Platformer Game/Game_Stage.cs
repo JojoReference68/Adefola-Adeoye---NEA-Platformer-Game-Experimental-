@@ -59,8 +59,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private Level CreateLevel1()
         {
             int heightMultiplier1 = heightmultiplier;
+            int Octaves1 = randomizer.Next(octaves, 11);
             // Customize and create the first level here
-            return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, persistence, octaves);
+            return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, persistence, Octaves1);
         }
 
         private Level CreateLevel2()

@@ -141,7 +141,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         static void ShowHighScores()//prints out the highscores from a txt file
         {
             Console.Clear();
-            HighScoreManager highScoreManager = new HighScoreManager("Test.txt");
+            HighScoreManager highScoreManager = new HighScoreManager();
             highScoreManager.ReadHighScoresFromFile();
             highScoreManager.SortDescending();
             highScoreManager.PrintHighScores();
