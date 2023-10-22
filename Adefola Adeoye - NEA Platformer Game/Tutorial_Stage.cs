@@ -73,14 +73,14 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         }
 
 
-        public void GenerateTutorialMap()
+        public void GenerateTutorialMap() //makes an empty map covering the entire console.
         {
             Console.SetWindowSize(205, 48);
             width = Console.WindowWidth;
             height = Console.WindowHeight;
 
             map = new char[width, height];
-            for (int row = 0; row < width; row++) //makes an empty map covering the entire console.
+            for (int row = 0; row < width; row++) 
             {
                 for (int col = 0; col < height; col++)
                 {
@@ -91,12 +91,12 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             SpawnPlayer();
         }
 
-        public void SpawnPlayer()
+        public void SpawnPlayer() //sets the player's initial coords
         {
             player.SetPos(platforms[0].getX(), platforms[0].getY() - 1);
         }
 
-        public void DisplayMap()       //Shows the onto the console
+        public void DisplayMap()       //Displays map onto the console
         {
             int rows = map.GetLength(0);
             int cols = map.GetLength(1);

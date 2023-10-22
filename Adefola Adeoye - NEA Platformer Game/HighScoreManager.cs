@@ -26,7 +26,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             }
 
         }
-        public void ReadHighScoresFromFile()
+        public void ReadHighScoresFromFile() // fetches data from a text file
         {
             filePath = Path.Combine(filePath, fileName);
             if (!File.Exists(filePath))

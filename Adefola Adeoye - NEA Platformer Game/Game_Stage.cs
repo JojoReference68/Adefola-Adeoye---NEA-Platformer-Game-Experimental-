@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Media;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace Adefola_Adeoye___NEA_Platformer_Game
 {
@@ -140,6 +141,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Console.WriteLine("Enter your username.");
             LoadingSequence();
             string userName = Console.ReadLine();
+            string regex = "^([a-zA-Z][a-zA-Z0-9]+)$";
             Console.Clear();
             return userName;
         }
