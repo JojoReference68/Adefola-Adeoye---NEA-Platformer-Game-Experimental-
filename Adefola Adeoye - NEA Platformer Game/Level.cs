@@ -24,6 +24,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private int minTerrainHeight; // Minimum height for the terrain
         private bool isMusicPlaying;
         private PlatformManager platformManager;
+        private char platformChar;
 
 
         public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves)
@@ -32,6 +33,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             gameMapHeight = GameMapHeight;
             heightmultiplier = HeightMultiplier;
             terrainChar = TerrainChar;
+            platformChar = '=';
             persistence = Persistence;
             octaves = Octaves;
             minTerrainHeight = 1;
@@ -112,19 +114,22 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 }
 
             }
-            else if (input.Key == ConsoleKey.UpArrow && CheckTouchingTerrain() == true && player.GetPosY() <= gameMapHeight - 1) //Lets player jump
+            else if (input.Key == ConsoleKey.UpArrow && CheckTouchingMap() == true && player.GetPosY() <= gameMapHeight - 1) //Lets player jump
             {
                 player.MoveUp();
             }
         }
-
+        private bool CheckMapCollisionAbove()
+        {
+            return (gameMap[player.GetPosX(), player.GetPosY() - 1] == terrainChar) || (gameMap[player.GetPosX(), player.GetPosY() - 1] == platformChar);
+        }
         protected bool CheckCollisionLeft()  //Checks if the player and terrain to the right are touching
         {
-            return gameMap[player.GetPosX() - 1, player.GetPosY()] == terrainChar;
+            return (gameMap[player.GetPosX() - 1, player.GetPosY()] == terrainChar) || (gameMap[player.GetPosX() - 1, player.GetPosY()] == platformChar);
         }
         protected bool CheckCollisionRight() //Checks if the player and terrain to the left are touching
         {
-            return gameMap[player.GetPosX() + 1, player.GetPosY()] == terrainChar;
+            return (gameMap[player.GetPosX() + 1, player.GetPosY()] == terrainChar) || (gameMap[player.GetPosX() + 1, player.GetPosY()] == platformChar); ;
         }
 
         public bool CheckTouchingTerrain() //Checks if the player and terrain below are touching
@@ -133,6 +138,15 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             if (player.GetPosX() >= 0 && player.GetPosX() < width && player.GetPosY() >= 0 && player.GetPosY() < gameMapHeight - 1)
             {
                 return gameMap[player.GetPosX(), player.GetPosY() + 1] == terrainChar;
+            }
+            return false;
+        }
+
+        public bool CheckTouchingMap()
+        {
+            if (CheckTouchingPlatform() == true || CheckTouchingTerrain() == true)
+            {
+                return true;
             }
             return false;
         }
@@ -173,7 +187,12 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 }
                 player.Delete(gameMap);
                 HandleGravity();
-                if (CheckTouchingTerrain() == true) //ensures player does not fall through
+                if (CheckMapCollisionAbove() == true)
+                {
+                    player.SetInitialVelocity(0.0);
+                    player.SetPosY(player.GetPosY() + 1);
+                }
+                if (CheckTouchingTerrain() == true || CheckTouchingPlatform() == true) //ensures player does not fall through
                 {
                     player.SetInitialVelocity(0.0);
                     if (ReachedEndofLevel() == true) { quitGame = true; } //ends the level once the player has reached the end of the gamemap.
@@ -182,6 +201,18 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 System.Threading.Thread.Sleep(50);
             }
 
+        }
+
+        public bool CheckTouchingPlatform()
+        {
+            if (true)
+            {
+                if (player.GetPosX() >= 0 && player.GetPosX() < width && player.GetPosY() >= 0 && player.GetPosY() < gameMapHeight - 1)
+                {
+                    return gameMap[player.GetPosX(), player.GetPosY() + 1] == platformChar;
+                }
+                return false;
+            }
         }
 
         public void PlayBackgroundMusic()
