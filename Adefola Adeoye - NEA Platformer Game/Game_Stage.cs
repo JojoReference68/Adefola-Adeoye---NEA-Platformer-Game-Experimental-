@@ -33,6 +33,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private List<Level> levels; // List to store different levels
         private int currentLevelIndex; // Index of the current level
         private string playerusername;
+        private int totalScore;
 
 
         public Game_Stage()
@@ -40,6 +41,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             currentLevelIndex = 0; // Start with the first level
             heightmultiplier = randomizer.Next(20, 30);
             terrainChar = '█';
+            totalScore = 0;
             Console.SetWindowSize(width, gameMapHeight);
 
             levels = new List<Level>();
@@ -52,7 +54,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Level level3 = CreateLevel3();
             levels.Add(level3);
 
-
+            
 
 
         }
@@ -67,16 +69,18 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         private Level CreateLevel2()
         {
-            int heightMultiplier2 = heightmultiplier + 5;
+            int heightMultiplier2 = heightmultiplier;
+            int Octaves2 = randomizer.Next(octaves, 11);
             // Customize and create the second level here
-            return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, persistence, octaves);
+            return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, persistence, Octaves2);
         }
 
         private Level CreateLevel3()
         {
-            int heightMultiplier3 = heightmultiplier + 10;
+            int heightMultiplier3 = heightmultiplier;
+            int Octaves3 = randomizer.Next(octaves, 11);
             // Customize and create the third level here
-            return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence, octaves);
+            return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence, Octaves3);
         }
 
 
@@ -100,7 +104,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private void VictoryMessage()
         {
             Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("       _      _                   \r\n      (_)    | |                  \r\n__   ___  ___| |_ ___  _ __ _   _ \r\n\\ \\ / / |/ __| __/ _ \\| '__| | | |\r\n \\ V /| | (__| || (_) | |  | |_| |\r\n  \\_/ |_|\\___|\\__\\___/|_|   \\__, |\r\n                             __/ |\r\n                            |___/ \r\n");
             Console.ReadKey(true);
             Console.Clear();
@@ -114,9 +118,11 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Level currentLevel = levels[currentLevelIndex];
 
             //level loading/initialization logic can goes here
+            currentLevel.SetScore(totalScore);
             currentLevel.LevelIntro(currentLevelIndex+1);
             currentLevel.LevelSetUp();
             currentLevel.BeginGame();
+            totalScore = currentLevel.GetScore();
         }
 
         public void BeginGame()
@@ -165,7 +171,5 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             return player;
         }
-
-
     }
 }

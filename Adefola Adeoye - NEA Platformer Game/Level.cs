@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Media;
 using System.Text;
@@ -25,6 +26,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private bool isMusicPlaying;
         private PlatformManager platformManager;
         private char platformChar;
+        private int score;
+        Stopwatch stopwatch = new Stopwatch();
+        int maxScore;
 
 
         public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves)
@@ -38,6 +42,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             octaves = Octaves;
             minTerrainHeight = 1;
             terminalVelocity = 7;
+            maxScore = 1000000;
             Console.SetWindowSize(width, gameMapHeight);
             
             // Initialize the player
@@ -174,6 +179,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         public void BeginGame()
         {
             bool quitGame = false;
+            Console.Title = $"NEA Platformer Game - Score: {score}";
+            stopwatch.Start();
+
 
             //seperate thread for music playback(yet to be implemented)
 
@@ -200,10 +208,13 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 player.Show(gameMap);
                 System.Threading.Thread.Sleep(50);
             }
-
+            stopwatch.Stop();
+            TimeSpan elapsedTime = stopwatch.Elapsed;
+            score += (int)(maxScore / elapsedTime.TotalSeconds);
+            UpdateScore();
         }
 
-        public bool CheckTouchingPlatform()
+        private bool CheckTouchingPlatform()
         {
             if (true)
             {
@@ -215,7 +226,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             }
         }
 
-        public void PlayBackgroundMusic()
+        private void PlayBackgroundMusic()
         {
             string filepath = "C:\\Users\\Adefola\\Documents\\Projects\\Adefola Adeoye - NEA Platformer Game\\Adefola Adeoye - NEA Platformer Game\\bin\\Debug\\Megalovania.wav";
             //plays megalovania
@@ -294,6 +305,26 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             // Create platforms and add them to the gamemap
             GeneratePlatformsUsingPerlinNoise(6, 8, 11, 1, 3, 10, 25, 5);
             
+        }
+
+        private void SetUpScore(int S)
+        {
+            score = S;
+            Console.Title = $"NEA Platformer Game - Score: {score}";
+        }
+
+        public int GetScore()
+        {
+            return score;
+        }
+        private void UpdateScore()
+        {
+            Console.Title = $"NEA Platformer Game - Score: {score}";
+        }
+
+        public void SetScore(int newScore)
+        {
+            score = newScore;
         }
     }
 
