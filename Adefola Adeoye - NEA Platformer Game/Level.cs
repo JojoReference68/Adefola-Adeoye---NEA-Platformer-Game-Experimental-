@@ -179,7 +179,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         public void BeginGame()
         {
             bool quitGame = false;
-            Console.Title = $"NEA Platformer Game - Score: {score}";
+            UpdateScore();
             stopwatch.Start();
 
 
