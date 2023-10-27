@@ -26,6 +26,20 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             }
 
         }
+
+        public void AddHighScore(string playerName, int score)
+        {
+            // Create a new high score entry
+            HighScoreEntry entry = new HighScoreEntry(playerName, score);
+            HighScoresList.Add(entry);
+            SortDescending();
+
+            // If the list has more than 20 entries, remove the extras
+            if (HighScoresList.Count > 20)
+            {
+                HighScoresList = HighScoresList.Take(20).ToList();
+            }
+        }
         public void ReadHighScoresFromFile() // fetches data from a text file
         {
             filePath = Path.Combine(filePath, fileName);
@@ -54,6 +68,26 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             catch (Exception)
             {
                 Console.WriteLine("An error has occurred while reading high scores.");
+            }
+        }
+
+        public void SaveHighScoresToFile()
+        {
+            try
+            {
+                SortDescending();
+
+                // Convert the high scores to a list of strings in the format "Username,Score"
+                List<string> highScoreStrings = HighScoresList.Select(entry => $"{entry.getUsername()},{entry.getScore()}").ToList();
+
+                // Write the high scores to the file
+                File.WriteAllLines(filePath, highScoreStrings);
+
+                Console.WriteLine("High scores saved successfully.");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("An error occurred while saving high scores.");
             }
         }
 

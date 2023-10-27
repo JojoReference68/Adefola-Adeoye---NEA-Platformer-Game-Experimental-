@@ -34,10 +34,12 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private int currentLevelIndex; // Index of the current level
         private string playerusername;
         private int totalScore;
+        private HighScoreManager highScoreManager;
 
 
         public Game_Stage()
         {
+            highScoreManager = new HighScoreManager();
             currentLevelIndex = 0; // Start with the first level
             heightmultiplier = randomizer.Next(20, 30);
             terrainChar = '█';
@@ -83,7 +85,11 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence, Octaves3);
         }
 
-
+        private void AddNewHighScore()
+        {
+            highScoreManager.ReadHighScoresFromFile();
+            highScoreManager.AddHighScore(playerusername, totalScore);
+        }
         public void SwitchToNextLevel()
         {
             // Switch to the next level
@@ -131,6 +137,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             LoadCurrentLevel();
             SwitchToNextLevel();
             SwitchToNextLevel();
+            AddNewHighScore();
         }
 
 
