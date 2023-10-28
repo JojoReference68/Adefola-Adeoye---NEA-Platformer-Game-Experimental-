@@ -39,10 +39,10 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             {
                 HighScoresList = HighScoresList.Take(20).ToList();
             }
+            SaveHighScoresToFile();
         }
         public void ReadHighScoresFromFile() // fetches data from a text file
         {
-            filePath = Path.Combine(filePath, fileName);
             if (!File.Exists(filePath))
             {
                 Console.WriteLine("High scores file not found.");
@@ -83,11 +83,11 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 // Write the high scores to the file
                 File.WriteAllLines(filePath, highScoreStrings);
 
-                Console.WriteLine("High scores saved successfully.");
             }
             catch (Exception)
             {
                 Console.WriteLine("An error occurred while saving high scores.");
+                Console.ReadKey();
             }
         }
 

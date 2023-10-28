@@ -19,6 +19,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             bool exit = false;
             while (exit == false) //Starter menu
             {
+                Console.Title = "NEA Platformer Game";
                 int startMenuOption = DisplayStartMenu(5);
                 switch (startMenuOption)
                 {

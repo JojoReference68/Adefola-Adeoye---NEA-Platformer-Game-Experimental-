@@ -153,10 +153,29 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             Console.WriteLine("Enter your username.");
             LoadingSequence();
-            string userName = Console.ReadLine();
-            string regex = "^([a-zA-Z][a-zA-Z0-9]+)$";
-            Console.Clear();
-            return userName;
+            string userName;
+            string regex = @"^[a-zA-Z][a-zA-Z0-9]*$";
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Enter your username:");
+                LoadingSequence();
+                userName = Console.ReadLine();
+
+                //Checks if the username matches the regular expression
+                if (Regex.IsMatch(userName, regex))
+                {
+                    Console.Clear();
+                    return userName;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Invalid username. Usernames must start with a letter, contain only letters and numbers, and have at least one character.");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
+                }
+            }
         }
 
         static void LoadingSequence()
