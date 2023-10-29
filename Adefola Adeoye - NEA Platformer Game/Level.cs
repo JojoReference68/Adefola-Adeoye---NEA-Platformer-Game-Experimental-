@@ -126,7 +126,15 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         }
         private bool CheckMapCollisionAbove()
         {
-            return (gameMap[player.GetPosX(), player.GetPosY() - 1] == terrainChar) || (gameMap[player.GetPosX(), player.GetPosY() - 1] == platformChar);
+            if (player.GetPosX() >= 0 && player.GetPosX() < width && player.GetPosY() > 0 && player.GetPosY() < gameMapHeight - 1)
+            {
+                return (gameMap[player.GetPosX(), player.GetPosY() - 1] == terrainChar) || (gameMap[player.GetPosX(), player.GetPosY() - 1] == platformChar);
+            }
+            else
+            {
+                return false;
+            }
+            
         }
         protected bool CheckCollisionLeft()  //Checks if the player and terrain to the right are touching
         {
@@ -303,7 +311,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private void PlatformsSetUp()
         {
             // Create platforms and add them to the gamemap
-            GeneratePlatformsUsingPerlinNoise(6, 8, 11, 1, 3, 10, 25, 5);
+            GeneratePlatformsUsingPerlinNoise(7, 8, 11, 1, 2, heightmultiplier - 15, heightmultiplier + 5, 5);
             
         }
 

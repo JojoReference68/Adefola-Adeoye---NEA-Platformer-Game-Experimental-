@@ -17,17 +17,12 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
     {
         private int width = 205;
         private int gameMapHeight = 48; // Set the height of your game world
-        private int minTerrainHeight = 1; // Minimum height for the terrain
         private int heightmultiplier;
         //Maximum height for the terrain
         private float persistence = 0.5f;
         private int octaves = 5;
-        private Terrain_Generator terrainGenerator;
-        private float[] terrain;
-        private char[,] gameMap; // 2D array to represent the game world
         private Player player;
         private Random randomizer = new Random();
-        private int terminalVelocity;
         private char terrainChar;
         bool isMusicPlaying;
         private List<Level> levels; // List to store different levels
@@ -60,29 +55,37 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
 
         }
+        private float GenerateRandomFloat(float minValue, float maxValue)
+        {
+            float randomValue = (float)(randomizer.NextDouble() * (maxValue - minValue) + minValue);
+            return randomValue;
+        }
 
         private Level CreateLevel1()
         {
-            int heightMultiplier1 = heightmultiplier;
-            int Octaves1 = randomizer.Next(octaves, 11);
+            int heightMultiplier1 = randomizer.Next(20, 30);
+            int Octaves1 = randomizer.Next(5, 11);
+            float persistence1 = GenerateRandomFloat(0.1f, 0.5f);
             // Customize and create the first level here
-            return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, persistence, Octaves1);
+            return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, persistence1, Octaves1);
         }
 
         private Level CreateLevel2()
         {
-            int heightMultiplier2 = heightmultiplier;
-            int Octaves2 = randomizer.Next(octaves, 11);
+            int heightMultiplier2 = randomizer.Next(20, 30);
+            int Octaves2 = randomizer.Next(5, 11);
+            float persistence2 = GenerateRandomFloat(0.1f, 0.5f);
             // Customize and create the second level here
-            return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, persistence, Octaves2);
+            return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, persistence2, Octaves2);
         }
 
         private Level CreateLevel3()
         {
-            int heightMultiplier3 = heightmultiplier;
-            int Octaves3 = randomizer.Next(octaves, 11);
+            int heightMultiplier3 = randomizer.Next(20, 30);
+            int Octaves3 = randomizer.Next(5, 11);
+            float persistence3 = GenerateRandomFloat(0.1f, 0.5f);
             // Customize and create the third level here
-            return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence, Octaves3);
+            return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence3, Octaves3);
         }
 
         private void AddNewHighScore()
