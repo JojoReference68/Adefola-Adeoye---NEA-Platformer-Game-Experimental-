@@ -51,7 +51,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Level level3 = CreateLevel3();
             levels.Add(level3);
 
-            
+
 
 
         }
@@ -74,7 +74,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             int heightMultiplier2 = randomizer.Next(20, 30);
             int Octaves2 = randomizer.Next(5, 11);
-            float persistence2 = GenerateRandomFloat(0.1f, 0.5f);
+            float persistence2 = GenerateRandomFloat(0.2f, 0.5f);
             // Customize and create the second level here
             return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, persistence2, Octaves2);
         }
@@ -83,7 +83,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             int heightMultiplier3 = randomizer.Next(20, 30);
             int Octaves3 = randomizer.Next(5, 11);
-            float persistence3 = GenerateRandomFloat(0.1f, 0.5f);
+            float persistence3 = GenerateRandomFloat(0.3f, 0.5f);
             // Customize and create the third level here
             return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence3, Octaves3);
         }
@@ -128,7 +128,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
             //level loading/initialization logic can goes here
             currentLevel.SetScore(totalScore);
-            currentLevel.LevelIntro(currentLevelIndex+1);
+            currentLevel.LevelIntro(currentLevelIndex + 1);
             currentLevel.LevelSetUp();
             currentLevel.BeginGame();
             totalScore = currentLevel.GetScore();

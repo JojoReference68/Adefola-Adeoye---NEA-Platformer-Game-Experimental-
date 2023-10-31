@@ -44,7 +44,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             terminalVelocity = 7;
             maxScore = 1000000;
             Console.SetWindowSize(width, gameMapHeight);
-            
+
             // Initialize the player
             player = new Player("PlayerName", 0, 0, 0, 0);
 
@@ -134,7 +134,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             {
                 return false;
             }
-            
+
         }
         protected bool CheckCollisionLeft()  //Checks if the player and terrain to the right are touching
         {
@@ -312,7 +312,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             // Create platforms and add them to the gamemap
             GeneratePlatformsUsingPerlinNoise(7, 8, 11, 1, 2, heightmultiplier - 15, heightmultiplier + 5, 5);
-            
+
         }
 
         private void SetUpScore(int S)
