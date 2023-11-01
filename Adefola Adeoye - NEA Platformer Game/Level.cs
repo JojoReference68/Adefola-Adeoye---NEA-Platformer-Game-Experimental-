@@ -29,6 +29,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private int score;
         Stopwatch stopwatch = new Stopwatch();
         int maxScore;
+        private Dictionary<char, ConsoleColor> colorDictionary;
 
 
         public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves)
@@ -45,6 +46,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             maxScore = 1000000;
             Console.SetWindowSize(width, gameMapHeight);
 
+            colorDictionary = new Dictionary<char, ConsoleColor>();
             // Initialize the player
             player = new Player("PlayerName", 0, 0, 0, 0);
 
@@ -53,9 +55,16 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             terrain = terrainGenerator.GeneratePerlinNoise();
             // Initialize the game map based on terrain
             gameMap = new char[width, gameMapHeight];
+            InitializeColors();
             platformManager = new PlatformManager(gameMap, width, gameMapHeight);
         }
 
+        private void InitializeColors()
+        {
+            colorDictionary.Add('*', ConsoleColor.White);
+            colorDictionary.Add('=', ConsoleColor.Gray);
+            colorDictionary.Add('█', ConsoleColor.Green);
+        }
 
         public void GeneratePlatformsUsingPerlinNoise(int numberOfPlatforms, int minWidth, int maxWidth, int minHeight, int maxHeight, int minYPos, int maxYPos, int minDistance)
         {
@@ -179,15 +188,24 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                     char mapChar = (adjustedY < gameMapHeight) ? gameMap[x, adjustedY] : ' '; // Use space if outside gameMap
 
                     Console.SetCursorPosition(x, y);
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write(mapChar);
-                    Console.ForegroundColor = ConsoleColor.White;
+                    if (mapChar != ' ')
+                    {
+                        Console.ForegroundColor = colorDictionary[mapChar];
+                        Console.Write(mapChar);
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.Write(mapChar);
+                    }
+
                 }
             }
         }
 
         public void BeginGame()
         {
+
             bool quitGame = false;
             UpdateScore();
             stopwatch.Start();
@@ -198,6 +216,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             //main game logic
             while (quitGame == false)
             {
+                Console.CursorVisible = false;
                 if (Console.KeyAvailable == true)
                 {
                     ConsoleKeyInfo input = Console.ReadKey(true);
@@ -257,7 +276,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 System.Threading.Thread.Sleep(500);
                 Console.Clear();
             }
-
         }
 
         // Other level-specific methods and logic
