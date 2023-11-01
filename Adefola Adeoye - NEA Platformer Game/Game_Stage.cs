@@ -152,7 +152,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Console.ReadKey(true);
             Console.Clear();
         }
-        static string GetUsername()
+        public string GetUsername()
         {
             Console.WriteLine("Enter your username.");
             LoadingSequence();
@@ -181,7 +181,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             }
         }
 
-        static void LoadingSequence()
+        public void LoadingSequence()
         {
             int count = 0;
             while (Console.KeyAvailable == false)

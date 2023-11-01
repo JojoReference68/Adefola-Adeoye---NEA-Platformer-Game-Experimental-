@@ -179,7 +179,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                     char mapChar = (adjustedY < gameMapHeight) ? gameMap[x, adjustedY] : ' '; // Use space if outside gameMap
 
                     Console.SetCursorPosition(x, y);
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write(mapChar);
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
             }
         }

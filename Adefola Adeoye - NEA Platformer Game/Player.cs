@@ -30,7 +30,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void Delete(char[,] map) //Deletes player character
         {
-            if (map[XPos, YPos] != '=')
+            if (map[XPos, YPos] != '=' || map[XPos, YPos] != '█')
             {
                 map[XPos, YPos] = ' ';
                 WriteCharToConsole(map);
@@ -40,7 +40,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void Show(char[,] map) //Shows player character
         {
-            if (map[XPos, YPos] != '=')
+            if (map[XPos, YPos] != '=' || map[XPos, YPos] != '█')
             {
                 map[XPos, YPos] = character;
                 WriteCharToConsole(map);
@@ -77,7 +77,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void MoveLeft(char[,] map) //moves the character to the left of the map
         {
-            if (map[XPos - 1, YPos] != '=')
+            if (map[XPos - 1, YPos] != '=' || map[XPos, YPos] != '█')
             {
                 Delete(map);
                 XPos--;
@@ -87,7 +87,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void MoveRight(char[,] map) //moves the character to the left of the map
         {
-            if (map[XPos + 1, YPos] != '=')
+            if (map[XPos + 1, YPos] != '=' || map[XPos, YPos] != '█')
             {
                 Delete(map);
                 XPos++;
