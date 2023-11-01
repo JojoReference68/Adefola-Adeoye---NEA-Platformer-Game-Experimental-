@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enemy.cs" />
     <Compile Include="Game_Stage.cs" />
+    <Compile Include="Health.cs" />
     <Compile Include="HighScoreEntry.cs" />
     <Compile Include="HighScoreManager.cs" />
     <Compile Include="Level.cs" />
