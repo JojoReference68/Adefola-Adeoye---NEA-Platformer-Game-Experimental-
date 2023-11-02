@@ -64,6 +64,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             colorDictionary.Add('*', ConsoleColor.White);
             colorDictionary.Add('=', ConsoleColor.Gray);
             colorDictionary.Add('█', ConsoleColor.Green);
+            colorDictionary.Add('▄', ConsoleColor.DarkRed);
         }
 
         public void GeneratePlatformsUsingPerlinNoise(int numberOfPlatforms, int minWidth, int maxWidth, int minHeight, int maxHeight, int minYPos, int maxYPos, int minDistance)

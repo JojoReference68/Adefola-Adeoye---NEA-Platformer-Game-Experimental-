@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
+using System.Text.RegularExpressions;
 
 namespace Adefola_Adeoye___NEA_Platformer_Game
 {
@@ -19,8 +20,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             bool exit = false;
             while (exit == false) //Starter menu
             {
+                Console.CursorVisible = false;
                 Console.Title = "NEA Platformer Game";
-                int startMenuOption = DisplayStartMenu(5);
+                int startMenuOption = DisplayStartMenu(4);
                 switch (startMenuOption)
                 {
                     case 0:
@@ -28,20 +30,14 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                         Console.ReadKey(true);
                         break;
                     case 1:
-                        Console.Clear();
-                        Console.WriteLine("  Not implemented yet");
-                        System.Threading.Thread.Sleep(1000);
-                        Console.Clear();
-                        break;
-                    case 2:
                         StartTutorial();
                         Console.ReadKey(true);
                         break;
-                    case 3:
+                    case 2:
                         ShowHighScores();
                         Console.ReadKey(true);
                         break;
-                    case 4:
+                    case 3:
                         exitGame();
                         exit = true;
                         break;
@@ -64,7 +60,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
 
             Console.WriteLine("  New Game");
-            Console.WriteLine("  Continue Game");
             Console.WriteLine("  Play Tutorial");
             Console.WriteLine("  View High Scores");
             Console.Write("  Close Game");
@@ -137,12 +132,32 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             Console.WriteLine("Enter your username.");
             LoadingSequence();
-            string userName = Console.ReadLine();
-            Console.Clear();
-            return userName;
+            string userName;
+            string regex = @"^[a-zA-Z][a-zA-Z0-9]*$";
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Enter your username:");
+                LoadingSequence();
+                userName = Console.ReadLine();
 
+                //Checks if the username matches the regular expression
+                if (Regex.IsMatch(userName, regex))
+                {
+                    Console.Clear();
+                    return userName;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Invalid username. Usernames must start with a letter, contain only letters and numbers, and have at least one character.");
+                    Console.WriteLine("Press any key to continue...");
+                    Console.ReadKey();
+                }
+            }
         }
-        static void ShowHighScores()//prints out the highscores from a txt file
+
+            static void ShowHighScores()//prints out the highscores from a txt file
         {
             Console.Clear();
             HighScoreManager highScoreManager = new HighScoreManager();
