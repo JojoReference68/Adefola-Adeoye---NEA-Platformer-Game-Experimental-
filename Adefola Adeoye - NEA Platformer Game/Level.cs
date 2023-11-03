@@ -217,10 +217,10 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
             //seperate thread for music playback(yet to be implemented)
 
-            //main game logic
-            while (quitGame == false)
+            //main game logic.
+            while (quitGame == false && playerAlive == true)
             {
-
+                playerAlive = IsPlayerAlive();
                 Console.CursorVisible = false;
                 if (Console.KeyAvailable == true)
                 {
@@ -363,6 +363,11 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         public void getLives()
         {
             player.GetLives();
+        }
+
+        public bool IsPlayerAlive()
+        {
+            return !(player.GetLives() <= 0);
         }
     }
 
