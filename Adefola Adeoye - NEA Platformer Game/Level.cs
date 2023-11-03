@@ -30,6 +30,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         Stopwatch stopwatch = new Stopwatch();
         int maxScore;
         private Dictionary<char, ConsoleColor> colorDictionary;
+        private bool playerAlive;
 
 
         public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves)
@@ -204,9 +205,11 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             }
         }
 
+
+
         public void BeginGame()
         {
-
+            playerAlive = true;
             bool quitGame = false;
             UpdateScore();
             stopwatch.Start();
@@ -217,6 +220,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             //main game logic
             while (quitGame == false)
             {
+
                 Console.CursorVisible = false;
                 if (Console.KeyAvailable == true)
                 {
@@ -354,6 +358,11 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         public void SetScore(int newScore)
         {
             score = newScore;
+        }
+
+        public void getLives()
+        {
+            player.GetLives();
         }
     }
 

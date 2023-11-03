@@ -93,6 +93,27 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             highScoreManager.ReadHighScoresFromFile();
             highScoreManager.AddHighScore(playerusername, totalScore);
         }
+
+        private void SwitchLevels()
+        {
+            while (currentLevelIndex < levels.Count)
+            {
+                
+                if (currentLevelIndex >= levels.Count)
+                {
+                    //handle what happens when all levels are completed here
+                    VictoryMessage();
+                    break;
+
+                }
+                else
+                {
+                    currentLevelIndex++;
+                    // Load the new level
+                    LoadCurrentLevel();
+                }
+            }
+        }
         public void SwitchToNextLevel()
         {
             // Switch to the next level
@@ -137,9 +158,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         public void BeginGame()
         {
             GameIntro();
-            LoadCurrentLevel();
-            SwitchToNextLevel();
-            SwitchToNextLevel();
+            SwitchLevels();
             AddNewHighScore();
         }
 
