@@ -100,7 +100,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             currentLevelIndex++;
             if (currentLevelIndex >= levels.Count)
             {
-                //handle what happens when all levels are completed here
+                //handle what happens when all levels are completed here.
                 VictoryMessage();
 
             }
