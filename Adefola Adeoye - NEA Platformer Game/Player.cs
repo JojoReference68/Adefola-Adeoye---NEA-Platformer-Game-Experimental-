@@ -16,7 +16,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private double initialVelocity;
         private double acceleration; // Acceleration due to gravity;
         private double displacement;
-        private Health health;
 
         public Player(string username, int X, int Y, double v, double d)    //Initialize player object
         {
@@ -26,7 +25,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             initialVelocity = v;
             acceleration = 6;
             displacement = d;
-            health = new Health(3);
         }
 
         public void Delete(char[,] map) //Deletes player character
@@ -132,10 +130,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         public void ChangeName(string username)
         {
             name = username;
-        }
-        public int GetLives()
-        {
-            return health.GetHealth();
         }
     }
 }

@@ -207,7 +207,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
 
 
-        public void BeginGame()
+        public bool BeginGame()
         {
             playerAlive = true;
             bool quitGame = false;
@@ -220,7 +220,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             //main game logic.
             while (quitGame == false && playerAlive == true)
             {
-                playerAlive = IsPlayerAlive();
                 Console.CursorVisible = false;
                 if (Console.KeyAvailable == true)
                 {
@@ -246,6 +245,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             TimeSpan elapsedTime = stopwatch.Elapsed;
             score += (int)(maxScore / elapsedTime.TotalSeconds);
             UpdateScore();
+            return playerAlive;
         }
 
         private bool CheckTouchingPlatform()
@@ -360,15 +360,8 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             score = newScore;
         }
 
-        public void getLives()
-        {
-            player.GetLives();
-        }
+        
 
-        public bool IsPlayerAlive()
-        {
-            return !(player.GetLives() <= 0);
-        }
     }
 
 }

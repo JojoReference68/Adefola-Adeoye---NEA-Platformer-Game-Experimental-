@@ -30,10 +30,12 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private string playerusername;
         private int totalScore;
         private HighScoreManager highScoreManager;
+        private bool isPlayerAlive;
 
 
         public Game_Stage()
         {
+            isPlayerAlive = true;
             highScoreManager = new HighScoreManager();
             currentLevelIndex = 0; // Start with the first level
             heightmultiplier = randomizer.Next(20, 30);
@@ -94,20 +96,36 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             highScoreManager.AddHighScore(playerusername, totalScore);
         }
 
-        public void SwitchToNextLevel()
+        private void EndGame(bool gameWon)
         {
-            // Switch to the next level
-            currentLevelIndex++;
-            if (currentLevelIndex >= levels.Count)
+            if (gameWon == true)
             {
-                //handle what happens when all levels are completed here.
                 VictoryMessage();
-
             }
             else
             {
-                // Load the new level
-                LoadCurrentLevel();
+                Console.WriteLine("You are dead.");
+                Console.WriteLine("Press any key to continue");
+                Console.ReadKey(true);
+                currentLevelIndex = 0;
+            }
+            
+        }
+
+        public void SwitchToNextLevel()
+        {
+            for (int i = currentLevelIndex; i < levels.Count; i++)
+            {
+                if (isPlayerAlive == true)
+                {
+                    LoadCurrentLevel();
+                    currentLevelIndex++;
+                }
+                else
+                {
+                    EndGame(isPlayerAlive);
+                    //Death Screen and Restart the game.
+                }
             }
         }
 
@@ -131,7 +149,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             currentLevel.SetScore(totalScore);
             currentLevel.LevelIntro(currentLevelIndex + 1);
             currentLevel.LevelSetUp();
-            currentLevel.BeginGame();
+            isPlayerAlive = currentLevel.BeginGame();
             totalScore = currentLevel.GetScore();
         }
 
