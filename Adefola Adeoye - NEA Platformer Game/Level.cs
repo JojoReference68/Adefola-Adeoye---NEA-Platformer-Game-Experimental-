@@ -217,7 +217,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
             //seperate thread for music playback(yet to be implemented)
 
-            //main game logic.
+            //Main game logic.
             while (quitGame == false && playerAlive == true)
             {
                 Console.CursorVisible = false;

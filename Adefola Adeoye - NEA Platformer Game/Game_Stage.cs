@@ -31,11 +31,13 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private int totalScore;
         private HighScoreManager highScoreManager;
         private bool isPlayerAlive;
+        private bool quitGame;
 
 
         public Game_Stage()
         {
             isPlayerAlive = true;
+            quitGame = false;
             highScoreManager = new HighScoreManager();
             currentLevelIndex = 0; // Start with the first level
             heightmultiplier = randomizer.Next(20, 30);
@@ -101,12 +103,23 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             if (gameWon == true)
             {
                 VictoryMessage();
+                AddNewHighScore();
             }
             else
             {
+                Console.Clear();
                 Console.WriteLine("You are dead.");
-                Console.WriteLine("Press any key to continue");
-                Console.ReadKey(true);
+                Console.WriteLine("(1). Press escape to quit.\n(2). Press any key to continue.");
+                ConsoleKeyInfo input = Console.ReadKey(true);
+                if (input.Key == ConsoleKey.Escape)
+                {
+                    quitGame = true;
+                }
+                else
+                {
+                    quitGame = false;
+                }
+                Console.Clear();
                 currentLevelIndex = 0;
             }
             
@@ -114,19 +127,36 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void SwitchToNextLevel()
         {
-            for (int i = currentLevelIndex; i < levels.Count; i++)
+            while (currentLevelIndex < levels.Count) //Switches levels until the player passes the game or quits
             {
-                if (isPlayerAlive == true)
+                if (isPlayerAlive == true) //If the player passes a level and is alive they move on to the next level
                 {
                     LoadCurrentLevel();
                     currentLevelIndex++;
                 }
-                else
+                else                                //if not, the player gets a taken back to the first level
                 {
-                    EndGame(isPlayerAlive);
-                    //Death Screen and Restart the game.
+                    EndGame(false);
+                    if (quitGame == true)
+                    {
+                        break;
+                    }
+                    isPlayerAlive = true;
                 }
             }
+        }
+
+        public void BeginGame()
+        {
+            GameIntro();
+            currentLevelIndex = levels.Count - 1;
+            SwitchToNextLevel();
+            if (quitGame == false)
+            {
+                EndGame(true);
+            }
+            Console.Clear();
+            
         }
 
         private void VictoryMessage()
@@ -134,6 +164,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("       _      _                   \r\n      (_)    | |                  \r\n__   ___  ___| |_ ___  _ __ _   _ \r\n\\ \\ / / |/ __| __/ _ \\| '__| | | |\r\n \\ V /| | (__| || (_) | |  | |_| |\r\n  \\_/ |_|\\___|\\__\\___/|_|   \\__, |\r\n                             __/ |\r\n                            |___/ \r\n");
+            Console.WriteLine($"You scored {totalScore} points.");
             Console.ReadKey(true);
             Console.Clear();
         }
@@ -145,7 +176,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             // Load the current level from the list
             Level currentLevel = levels[currentLevelIndex];
 
-            //level loading/initialization logic can goes here
+            //Level loading/initialization logic can goes here
             currentLevel.SetScore(totalScore);
             currentLevel.LevelIntro(currentLevelIndex + 1);
             currentLevel.LevelSetUp();
@@ -153,14 +184,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             totalScore = currentLevel.GetScore();
         }
 
-        public void BeginGame()
-        {
-            GameIntro();
-            LoadCurrentLevel();
-            SwitchToNextLevel();
-            SwitchToNextLevel();
-            AddNewHighScore();
-        }
+
 
 
         public void GameIntro()
@@ -194,8 +218,8 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 {
                     Console.Clear();
                     Console.WriteLine("Invalid username. Usernames must start with a letter, contain only letters and numbers, and have at least one character.");
-                    Console.WriteLine("Press any key to continue...");
-                    Console.ReadKey();
+                    Console.WriteLine("Press any key to continue");
+                    Console.ReadKey(true);
                 }
             }
         }
@@ -218,6 +242,16 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         public Player ReturnPlayer()
         {
             return player;
+        }
+
+        public void FancyDialogue(string sentence) 
+        {
+            foreach (char c in sentence) 
+            {
+                Console.Write(c);
+                Thread.Sleep(50);
+            }
+            Console.WriteLine();
         }
     }
 }
