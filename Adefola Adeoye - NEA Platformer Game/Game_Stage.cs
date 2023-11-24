@@ -165,6 +165,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("       _      _                   \r\n      (_)    | |                  \r\n__   ___  ___| |_ ___  _ __ _   _ \r\n\\ \\ / / |/ __| __/ _ \\| '__| | | |\r\n \\ V /| | (__| || (_) | |  | |_| |\r\n  \\_/ |_|\\___|\\__\\___/|_|   \\__, |\r\n                             __/ |\r\n                            |___/ \r\n");
             Console.WriteLine($"You scored {totalScore} points.");
+            Console.WriteLine($"Lives left: {levels[currentLevelIndex - 2].GetLives()}");
             Console.ReadKey(true);
             Console.Clear();
         }

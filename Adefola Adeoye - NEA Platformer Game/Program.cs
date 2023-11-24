@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Security.AccessControl;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Adefola_Adeoye___NEA_Platformer_Game
 {
@@ -51,7 +52,15 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Console.ReadKey(true);
         }
 
-
+        static void FancyDialogue(string sentence)
+        {
+            foreach (char c in sentence)
+            {
+                Console.Write(c);
+                Thread.Sleep(50);
+            }
+            Console.WriteLine();
+        }
         static int DisplayStartMenu(int totalOptions) //Shows the Start menu
         {
 
