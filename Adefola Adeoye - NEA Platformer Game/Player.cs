@@ -124,7 +124,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             initialVelocity = newV;
         }
 
-        public double GetAcceleration() //returns acceleration
+        public double GetAcceleration() //returns acceleration,
         {
             return acceleration;
         }

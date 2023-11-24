@@ -174,7 +174,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         private void LoadCurrentLevel()
         {
-            // Load the current level from the list
+            // Load the current level from the list.
             Level currentLevel = levels[currentLevelIndex];
 
             //Level loading/initialization logic can goes here

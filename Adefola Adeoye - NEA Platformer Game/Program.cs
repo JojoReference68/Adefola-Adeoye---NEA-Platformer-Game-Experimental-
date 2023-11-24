@@ -15,7 +15,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         public static Tutorial_Stage tutorial_Stage;
         static void Main(string[] args)
         {
-            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight); //adjusts console size
+            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight); //adjusts console size,
             Console.Title = "NEA Platformer Game";
             Console.CursorVisible = false;
             bool exit = false;
