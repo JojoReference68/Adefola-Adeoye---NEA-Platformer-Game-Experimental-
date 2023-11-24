@@ -235,7 +235,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 }
                 if (CheckTouchingTerrain() == true || CheckTouchingPlatform() == true) //ensures player does not fall through
                 {
-                    quitGame = true;
                     player.SetInitialVelocity(0.0);
                     if (ReachedEndofLevel() == true) { quitGame = true; } //ends the level once the player has reached the end of the gamemap.
                 }
