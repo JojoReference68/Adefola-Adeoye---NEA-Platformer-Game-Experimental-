@@ -31,10 +31,12 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         int maxScore;
         private Dictionary<char, ConsoleColor> colorDictionary;
         private bool playerAlive;
+        private List<Enemy> enemies;
 
 
         public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves)
         {
+            enemies = new List<Enemy>();
             width = Width;
             gameMapHeight = GameMapHeight;
             heightmultiplier = HeightMultiplier;
@@ -42,7 +44,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             platformChar = '=';
             persistence = Persistence;
             octaves = Octaves;
-            minTerrainHeight = 1;
+            minTerrainHeight = 0;
             terminalVelocity = 7;
             maxScore = 1000000;
             Console.SetWindowSize(width, gameMapHeight);
@@ -106,6 +108,10 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             {
                 newYPos = 0;
                 velocity = 0; // Reset velocity when hitting the top of the screen
+            }
+            if (player.GetPosY() >= gameMapHeight)
+            {
+                playerAlive = false;
             }
 
             player.SetPosY(newYPos);
@@ -370,6 +376,37 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             return player;
         }
+
+        public void SpawnEnemies(int numberOfEnemies)
+        {
+            int LeftLimit = 4;
+            int RightLimit = 4;
+            Random random = new Random();
+            for (int i = 0; i < numberOfEnemies; i++)
+            {
+                int randomX = random.Next(0, width);
+                int randomY = random.Next(0, gameMapHeight - heightmultiplier); 
+
+                enemies.Add(new Enemy(randomX, randomY, 0, 0, LeftLimit, RightLimit));
+            }
+        }
+
+        public void UpdateEnemies()
+        {
+            foreach (var enemy in enemies)
+            {
+                enemy.Gravity();
+                enemy.CheckTerrainCollision(gameMap);
+                // Implement logic for enemy movement, gravity, collisions, etc.
+                if (player.EnemyCollision(enemy))
+                {
+                    playerAlive = false;
+                    // Optionally, you can handle other things like deducting lives, resetting the level, etc.
+                }
+            }
+
+        }
+
     }
 
 }

@@ -134,14 +134,32 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             name = username;
         }
 
-        public void Die()
+        public void Die(int startingXpos, int StartingYpos)
         {
             lives--;
+            
         }
 
         public int GetLives()
         {
             return lives;
+        }
+
+        public bool IsOutOfLives()
+        {
+            return lives <= 0;
+        }
+        public void SetLives(int Lives)
+        {
+            lives = Lives;
+        }
+
+        public bool EnemyCollision(Enemy enemy)
+        {
+            int distanceX = Math.Abs(XPos - enemy.GetPosX());
+            int distanceY = Math.Abs(YPos - enemy.GetPosY());
+
+            return distanceX < 2 && distanceY < 2;
         }
     }
 }

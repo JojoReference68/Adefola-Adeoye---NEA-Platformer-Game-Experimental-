@@ -17,21 +17,22 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
     {
         private int width = 205;
         private int gameMapHeight = 48; // Set the height of your game world
-        private int heightmultiplier;
-        //Maximum height for the terrain
-        private float persistence = 0.5f;
+        private int heightmultiplier;
+        //Maximum height for the terrain
+        private float persistence = 0.5f;
         private int octaves = 5;
         private Player player;
         private Random randomizer = new Random();
         private char terrainChar;
         bool isMusicPlaying;
         private List<Level> levels; // List to store different levels
-        private int currentLevelIndex; // Index of the current level
-        private string playerusername;
+        private int currentLevelIndex; // Index of the current level
+        private string playerusername;
         private int totalScore;
         private HighScoreManager highScoreManager;
         private bool isPlayerAlive;
         private bool quitGame;
+        private int livesLeft;
 
 
         public Game_Stage()
@@ -40,9 +41,10 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             quitGame = false;
             highScoreManager = new HighScoreManager();
             currentLevelIndex = 0; // Start with the first level
-            heightmultiplier = randomizer.Next(20, 30);
+            heightmultiplier = randomizer.Next(20, 30);
             terrainChar = '█';
             totalScore = 0;
+            livesLeft = 3;
             Console.SetWindowSize(width, gameMapHeight);
 
             levels = new List<Level>();
@@ -70,8 +72,8 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             int heightMultiplier1 = randomizer.Next(20, 30);
             int Octaves1 = randomizer.Next(5, 11);
             float persistence1 = GenerateRandomFloat(0.1f, 0.5f);
-            // Customize and create the first level here
-            return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, persistence1, Octaves1);
+            // Customize and create the first level here
+            return new Level(width, gameMapHeight, heightMultiplier1, terrainChar, persistence1, Octaves1);
         }
 
         private Level CreateLevel2()
@@ -79,8 +81,8 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             int heightMultiplier2 = randomizer.Next(20, 30);
             int Octaves2 = randomizer.Next(5, 11);
             float persistence2 = GenerateRandomFloat(0.2f, 0.5f);
-            // Customize and create the second level here
-            return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, persistence2, Octaves2);
+            // Customize and create the second level here
+            return new Level(width, gameMapHeight, heightMultiplier2, terrainChar, persistence2, Octaves2);
         }
 
         private Level CreateLevel3()
@@ -88,8 +90,8 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             int heightMultiplier3 = randomizer.Next(20, 30);
             int Octaves3 = randomizer.Next(5, 11);
             float persistence3 = GenerateRandomFloat(0.3f, 0.5f);
-            // Customize and create the third level here
-            return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence3, Octaves3);
+            // Customize and create the third level here
+            return new Level(width, gameMapHeight, heightMultiplier3, terrainChar, persistence3, Octaves3);
         }
 
         private void AddNewHighScore()
@@ -100,42 +102,74 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         private void EndGame(bool gameWon)
         {
-            if (gameWon == true)
+            if (gameWon == false)
             {
-                VictoryMessage();
-                AddNewHighScore();
+                if (!isPlayerAlive)
+                {
+                    livesLeft--;
+
+                    if (livesLeft <= 0)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n███▀▀▀██┼███▀▀▀███┼███▀█▄█▀███┼██▀▀▀\r\n██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼█┼┼┼██┼██┼┼┼\r\n██┼┼┼▄▄▄┼██▄▄▄▄▄██┼██┼┼┼▀┼┼┼██┼██▀▀▀\r\n██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██┼┼┼\r\n███▄▄▄██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██▄▄▄\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n███▀▀▀███┼▀███┼┼██▀┼██▀▀▀┼██▀▀▀▀██▄┼\r\n██┼┼┼┼┼██┼┼┼██┼┼██┼┼██┼┼┼┼██┼┼┼┼┼██┼\r\n██┼┼┼┼┼██┼┼┼██┼┼██┼┼██▀▀▀┼██▄▄▄▄▄▀▀┼\r\n██┼┼┼┼┼██┼┼┼██┼┼█▀┼┼██┼┼┼┼██┼┼┼┼┼██┼\r\n███▄▄▄███┼┼┼─▀█▀┼┼─┼██▄▄▄┼██┼┼┼┼┼██▄\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼█┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼███┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼████┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██████┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼████████┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██████████┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼████████████┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██████████████┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼█████████████┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼████████████┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼█████████┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼█┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼███┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼████┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼██████┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼████████┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼██████████┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼████████████┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼██████████████┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼█████████████┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼████████████┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼█████████┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼█┼┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼███┼┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼████┼┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██████┼┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼████████┼┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██████████┼┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼████████████┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██████████████┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼█████████████┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼████████████┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼█████████┼┼┼┼┼┼┼┼\r\n┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼");
+                        Console.WriteLine("Game Over! You are out of lives.");
+                        Console.WriteLine("(1). Press R to restart.\n(2). Press anything else to quit.");
+                        ConsoleKeyInfo userInput = Console.ReadKey(true);
+
+                        if (userInput.Key == ConsoleKey.R)
+                        {
+                            livesLeft = 3;
+                            RestartGame();
+                        }
+                        else
+                        {
+                            quitGame = true;
+                        }
+
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠛⠛⣋⣉⣉⣉⣉⣉⣉⣉⣉⡛⠛⠿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⡿⠛⣉⣤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣤⣉⠛⢿⣿⣿⣿⣿⣿\r\n⣿⣿⡿⢋⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣤⡈⢻⣿⣿⣿\r\n⣿⠏⣠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠙⣿⣿\r\n⡏⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠘⣿\r\n⠀⣿⣿⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢻⣿⡆⢻\r\n⢰⣿⡏⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣿⡇⢸\r\n⠀⣿⣧⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢠⣿⡇⢸\r\n⡆⢹⣿⡆⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⣼⣿⠁⣿\r\n⣷⡈⢿⡇⢸⣿⡿⠟⠛⠉⠉⠉⠛⢿⣿⣿⣿⣿⣿⡿⠟⠉⠉⠉⠉⠛⠻⣿⣿⠀⣿⠃⣼⣿\r\n⣿⣷⡈⠃⣼⣿⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⢁⣼⣿⣿\r\n⣿⣿⣷⠀⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⣼⣿⡇⢸⣿⣿⣿\r\n⣿⣿⣿⠀⣿⣿⣧⡀⠀⠀⠀⠀⢀⣼⣿⡟⣿⠻⣿⣿⣦⡀⠀⠀⠀⢀⣰⣿⣿⡧⢸⣿⣿⣿\r\n⣿⣿⣿⡄⢻⣿⣿⣿⣷⣶⣶⣿⣿⣿⠋⠀⣿⠀⠈⣿⣿⣿⣿⣶⣾⣿⣿⣿⣿⡇⢸⣿⣿⣿\r\n⣿⣿⣿⣷⣄⠻⢿⣿⣿⣿⣿⣿⣿⡟⠀⠀⣿⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⡿⠋⣠⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣧⠠⣌⠙⢿⣿⣿⣿⣇⠀⢀⣿⡄⠀⢠⣿⣿⣿⣿⠛⢁⡄⢰⣾⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⡄⢻⡄⣄⠹⣿⣿⣿⣷⣿⣿⣿⣷⣿⣿⣿⡿⢁⡄⣾⡇⣾⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⡇⢸⣿⢹⡆⣭⢙⡛⣛⢛⡛⡛⢛⠛⣛⢫⢀⡾⢸⣿⢀⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣧⢸⣿⡜⡇⣙⠘⠃⠿⢸⡇⡿⠸⠇⠟⢈⡸⡇⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⠈⣿⣷⣅⠻⠸⡇⣶⢰⡆⣶⢰⡆⡿⠘⣁⣴⣿⡟⢸⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣄⠹⣿⣿⣿⣷⣶⣦⣬⣥⣥⣴⣶⣾⣿⣿⣿⡿⢁⣾⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣦⡈⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⢋⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿\r\n⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣌⣉⣙⠛⠛⠛⢛⣉⣡⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿");
+                        Console.WriteLine("You are dead.");
+                        Console.WriteLine($"Lives remaining: {livesLeft}");
+                        Console.WriteLine("(1). Press any key to continue.");
+                        ConsoleKeyInfo input = Console.ReadKey(true);
+
+                        if (input.Key == ConsoleKey.Escape)
+                        {
+                            quitGame = true;
+                        }
+                        else
+                        {
+                            quitGame = false;
+                            RestartLevel();
+                        }
+                        Console.Clear();
+                    }
+
+
+                }
+                
+            
             }
             else
             {
-                Console.Clear();
-                Console.WriteLine("You are dead.");
-                Console.WriteLine("(1). Press escape to quit.\n(2). Press any key to continue.");
-                ConsoleKeyInfo input = Console.ReadKey(true);
-                if (input.Key == ConsoleKey.Escape)
-                {
-                    quitGame = true;
-                }
-                else
-                {
-                    quitGame = false;
-                }
-                Console.Clear();
-                currentLevelIndex = 0;
+                VictoryMessage();
             }
-            
         }
 
         public void SwitchToNextLevel()
         {
             while (currentLevelIndex < levels.Count) //Switches levels until the player passes the game or quits
-            {
+            {
                 if (isPlayerAlive == true) //If the player passes a level and is alive they move on to the next level
-                {
+                {
                     LoadCurrentLevel();
                     currentLevelIndex++;
                 }
-                else                                //if not, the player gets a taken back to the first level
-                {
+                else                                //if not, the player gets a the option to quit
+                {
                     EndGame(false);
                     if (quitGame == true)
                     {
@@ -156,14 +190,14 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 EndGame(true);
             }
             Console.Clear();
-            
+
         }
 
         private void VictoryMessage()
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("       _      _                   \r\n      (_)    | |                  \r\n__   ___  ___| |_ ___  _ __ _   _ \r\n\\ \\ / / |/ __| __/ _ \\| '__| | | |\r\n \\ V /| | (__| || (_) | |  | |_| |\r\n  \\_/ |_|\\___|\\__\\___/|_|   \\__, |\r\n                             __/ |\r\n                            |___/ \r\n");
+            Console.WriteLine("       _      _                   \r\n      (_)    | |                  \r\n__   ___  ___| |_ ___  _ __ _   _ \r\n\\ \\ / / |/ __| __/ _ \\| '__| | | |\r\n \\ V /| | (__| || (_) | |  | |_| |\r\n  \\_/ |_|\\___|\\__\\___/|_|   \\__, |\r\n                             __/ |\r\n                            |___/ \r\n");
             Console.WriteLine($"You scored {totalScore} points.");
             Console.WriteLine($"Lives left: {levels[currentLevelIndex - 2].GetLives()}");
             Console.ReadKey(true);
@@ -174,15 +208,16 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         private void LoadCurrentLevel()
         {
-            // Load the current level from the list.
-            Level currentLevel = levels[currentLevelIndex];
+            // Load the current level from the list.
+            Level currentLevel = levels[currentLevelIndex];
 
-            //Level loading/initialization logic can goes here
-            currentLevel.SetScore(totalScore);
+            //Level loading/initialization logic can goes here
+            currentLevel.SetScore(totalScore);
             currentLevel.LevelIntro(currentLevelIndex + 1);
             currentLevel.LevelSetUp();
             isPlayerAlive = currentLevel.BeginGame();
             totalScore = currentLevel.GetScore();
+            livesLeft = currentLevel.GetLives();
         }
 
 
@@ -209,8 +244,8 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 LoadingSequence();
                 userName = Console.ReadLine();
 
-                //Checks if the username matches the regular expression
-                if (Regex.IsMatch(userName, regex))
+                //Checks if the username matches the regular expression
+                if (Regex.IsMatch(userName, regex))
                 {
                     Console.Clear();
                     return userName;
@@ -245,14 +280,28 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             return player;
         }
 
-        public void FancyDialogue(string sentence) 
+        public void FancyDialogue(string sentence)
         {
-            foreach (char c in sentence) 
+            foreach (char c in sentence)
             {
                 Console.Write(c);
                 Thread.Sleep(50);
             }
             Console.WriteLine();
+        }
+        private void RestartLevel()
+        {
+            // Reset & restart the current level
+            isPlayerAlive = true;
+            LoadCurrentLevel();
+        }
+        private void RestartGame()
+        {
+            // Reset & restart the game
+            isPlayerAlive = true;
+            livesLeft = 3;
+            currentLevelIndex = 0; 
+            SwitchToNextLevel();
         }
     }
 }
