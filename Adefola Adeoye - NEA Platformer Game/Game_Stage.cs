@@ -118,7 +118,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
                         if (userInput.Key == ConsoleKey.R)
                         {
-                            livesLeft = 3;
                             RestartGame();
                         }
                         else
@@ -143,7 +142,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                         else
                         {
                             quitGame = false;
-                            RestartLevel();
                         }
                         Console.Clear();
                     }
@@ -161,15 +159,24 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
         public void SwitchToNextLevel()
         {
-            while (currentLevelIndex < levels.Count) //Switches levels until the player passes the game or quits
+            while (currentLevelIndex <= levels.Count ) //Switches levels until the player passes the game or quits
             {
                 if (isPlayerAlive == true) //If the player passes a level and is alive they move on to the next level
                 {
                     LoadCurrentLevel();
                     currentLevelIndex++;
+                    if (currentLevelIndex >= 3 && isPlayerAlive == true)
+                    {
+                        break;
+                    }
+
                 }
                 else                                //if not, the player gets a the option to quit
                 {
+                    if (currentLevelIndex >= 3 && isPlayerAlive == false)
+                    {
+                        currentLevelIndex--;
+                    }
                     EndGame(false);
                     if (quitGame == true)
                     {
@@ -183,7 +190,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         public void BeginGame()
         {
             GameIntro();
-            currentLevelIndex = levels.Count - 1;
+            currentLevelIndex = 0;
             SwitchToNextLevel();
             if (quitGame == false)
             {
@@ -201,6 +208,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             Console.WriteLine($"You scored {totalScore} points.");
             Console.WriteLine($"Lives left: {levels[currentLevelIndex - 2].GetLives()}");
             Console.ReadKey(true);
+            AddNewHighScore();
             Console.Clear();
         }
 
@@ -217,7 +225,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             currentLevel.LevelSetUp();
             isPlayerAlive = currentLevel.BeginGame();
             totalScore = currentLevel.GetScore();
-            livesLeft = currentLevel.GetLives();
         }
 
 
@@ -292,7 +299,9 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private void RestartLevel()
         {
             // Reset & restart the current level
+            
             isPlayerAlive = true;
+            currentLevelIndex--;
             LoadCurrentLevel();
         }
         private void RestartGame()
@@ -301,7 +310,6 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             isPlayerAlive = true;
             livesLeft = 3;
             currentLevelIndex = 0; 
-            SwitchToNextLevel();
         }
     }
 }

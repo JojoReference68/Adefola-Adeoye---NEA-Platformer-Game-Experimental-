@@ -34,6 +34,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         private List<Enemy> enemies;
 
 
+
         public Level(int Width, int GameMapHeight, int HeightMultiplier, char TerrainChar, float Persistence, int Octaves)
         {
             enemies = new List<Enemy>();
@@ -44,7 +45,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             platformChar = '=';
             persistence = Persistence;
             octaves = Octaves;
-            minTerrainHeight = 0;
+            minTerrainHeight = 1;
             terminalVelocity = 7;
             maxScore = 1000000;
             Console.SetWindowSize(width, gameMapHeight);
@@ -62,12 +63,26 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             platformManager = new PlatformManager(gameMap, width, gameMapHeight);
         }
 
+        private void ClearMap() //clears up the gameMap
+        {
+            for (int x = 0; x < width; x++)
+            {
+                int terrainHeight = (int)(terrain[x] * heightmultiplier);
+                for (int y = 0; y < gameMapHeight; y++)
+                {
+                    gameMap[x, y] = ' ';
+                }
+            }
+
+            enemies.Clear();
+        }
         private void InitializeColors()
         {
             colorDictionary.Add('*', ConsoleColor.White);
             colorDictionary.Add('=', ConsoleColor.Gray);
             colorDictionary.Add('█', ConsoleColor.Green);
             colorDictionary.Add('▄', ConsoleColor.DarkRed);
+            colorDictionary.Add('+', ConsoleColor.Magenta);
         }
 
         public void GeneratePlatformsUsingPerlinNoise(int numberOfPlatforms, int minWidth, int maxWidth, int minHeight, int maxHeight, int minYPos, int maxYPos, int minDistance)
@@ -220,7 +235,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             UpdateScore();
             stopwatch.Start();
 
-
+            
             //seperate thread for music playback(yet to be implemented)
 
             //Main game logic.
@@ -234,6 +249,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 }
                 player.Delete(gameMap);
                 HandleGravity();
+                UpdateEnemies();
                 if (CheckMapCollisionAbove() == true)
                 {
                     player.SetInitialVelocity(0.0);
@@ -292,9 +308,11 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         // Other level-specific methods and logic
         public void LevelSetUp()
         {
+            ClearMap();
             GenerateGameWorld();
             InitializePlayer();
             PlatformsSetUp();
+            SpawnEnemies(5);
             DisplayGameWorld();
         }
 
@@ -389,14 +407,21 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
 
                 enemies.Add(new Enemy(randomX, randomY, 0, 0, LeftLimit, RightLimit));
             }
+
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.AddEnemy(gameMap);
+            }
         }
 
         public void UpdateEnemies()
         {
             foreach (var enemy in enemies)
             {
+                enemy.Delete(gameMap);
                 enemy.Gravity();
                 enemy.CheckTerrainCollision(gameMap);
+                enemy.Show(gameMap);
                 // Implement logic for enemy movement, gravity, collisions, etc.
                 if (player.EnemyCollision(enemy))
                 {
@@ -404,6 +429,12 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                     // Optionally, you can handle other things like deducting lives, resetting the level, etc.
                 }
             }
+
+        }
+
+        private void ClearEnemies()
+        {
+
 
         }
 

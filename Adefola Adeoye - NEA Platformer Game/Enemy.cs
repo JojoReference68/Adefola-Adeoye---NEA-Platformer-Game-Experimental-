@@ -68,7 +68,7 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
         {
             Console.CursorLeft = XPos;
             Console.CursorTop = YPos;
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.Magenta;
             Console.Write(map[XPos, YPos]);
             Console.ForegroundColor = ConsoleColor.White;
             Console.CursorLeft = XPos;
@@ -161,6 +161,16 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
                 YPos = YPos - (int)initialVelocity;
                 initialVelocity = 0; 
             }
+        }
+
+        public char Character()
+        {
+            return character;
+        }
+
+        public void AddEnemy(char[,] map)
+        {
+            map[XPos, YPos] = character;
         }
     }
 }
