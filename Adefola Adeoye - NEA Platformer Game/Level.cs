@@ -305,14 +305,14 @@ namespace Adefola_Adeoye___NEA_Platformer_Game
             }
         }
 
-        // Other level-specific methods and logic
+        // Other level-specific methods and logic.
         public void LevelSetUp()
         {
             ClearMap();
             GenerateGameWorld();
             InitializePlayer();
             PlatformsSetUp();
-            SpawnEnemies(5);
+            SpawnEnemies(7);
             DisplayGameWorld();
         }
 
